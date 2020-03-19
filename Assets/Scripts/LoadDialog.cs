@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoadDialog : MonoBehaviour {
 
@@ -23,24 +24,44 @@ public class LoadDialog : MonoBehaviour {
 				string diaChar = dialogue.Element("character").Value;
 				string diaText = dialogue.Element("text").Value;
 
-				VNRedirect diaRedir;
-				if(dialogue.Element("redirect") != null)
+				VNRedirect diaRedir = null; //it should never be null, but won't compile unless set null
+				if (dialogue.Element("redirect") != null)
 				{
 					diaRedir = new VNRedirect(int.Parse(dialogue.Element("redirect").Attribute("scene").Value),
 											int.Parse(dialogue.Element("redirect").Attribute("dialogue").Value));
 				}
 
-				VNQuestion diaQuestion;
-				if(dialogue.Element("options") !=null)
+				VNQuestion diaQuestion = null; //it should never be null, but won't compile unless set null
+				if (dialogue.Element("options") !=null)
 				{
 					diaQuestion = new VNQuestion(); // TODO
 				}
+
+				VNDialogue vnDialogue = null; //it should never be null, but won't compile unless set null
+				if (diaRedir == null && diaQuestion == null)
+				{
+					vnDialogue = new VNDialogue(diaNr, diaChar, diaText);
+				}
+				else {
+					if (diaRedir != null)
+					{
+						vnDialogue = new VNDialogue(diaNr, diaChar, diaText, diaRedir);
+					}
+					if (diaQuestion != null)
+					{
+						vnDialogue = new VNDialogue(diaNr, diaChar, diaText, diaQuestion);
+					}
+				}
+
+				vnScene.Dialogues.Add(vnDialogue);
 			}
 
 			PersistentManagerScript.Instance.vnScenes.Add(vnScene);
 		}
 
 		Debug.Log("Loading XML File Done");
+		SceneManager.LoadScene(sceneName:"GameScene"); //Changing to the GameScene once the loading is done
+
 	}
 	
 	void Update () {

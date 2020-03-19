@@ -8,8 +8,10 @@ public class VNDialogue
     public int Number;
     public string Character = "";
     public string Text = "";
-    public VNRedirect Redirect;
-    public VNQuestion Question;
+    public bool hasRedirect = false;
+    public VNRedirect Redirect = null;
+    public bool isQuestion = false;
+    public VNQuestion Question = null;
 
     /* This one has no redirection set, if no redirection is set it will
        skip to the next available dialogue/scene.
@@ -26,29 +28,14 @@ public class VNDialogue
     public VNDialogue(int num, string chr, string txt, VNRedirect redir): this(num, chr, txt)
     {
         Redirect = redir;
+        hasRedirect = true;
     }
 
-    // This one calls the previous constructor and adds the VNQuestion
+    // This one calls the main constructor and adds the VNQuestion
 
-    public VNDialogue(int num, string chr, string txt, VNRedirect redir, VNQuestion qst): this(num, chr, txt, redir)
+    public VNDialogue(int num, string chr, string txt, VNQuestion qst): this(num, chr, txt)
     {
         Question = qst;
-    }
-
-    public bool isQuestion()
-    {
-        if (Question != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public bool hasRedirect()
-    {
-        if (Redirect != null)
-        {
-            return true;
-        }
-        return false;
+        isQuestion = true;
     }
 }
