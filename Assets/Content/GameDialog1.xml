@@ -1,0 +1,36 @@
+<Document>
+   <Scene number="1">
+      <Dialogue number="1">
+         <character>Risky</character>
+         <text>Hello and welcome to AvarumTales! This is a test dialogue meant to introduce you to the game.</text>
+      </Dialogue>
+      <Dialogue number="2">
+         <character>Risky</character>
+         <text>This is the dialogue number 2 and I'm going to ask you a question after.</text>
+      </Dialogue>
+      <Dialogue number="3">
+         <character>Risky</character>
+         <text>What are you going to choose?</text>
+         <options>
+            <option>
+               <option_text>This is option A</option_text>
+               <redirect scene="1" dialogue="4"></redirect>
+            </option>
+            <option>
+               <option_text>This is option B</option_text>
+               <redirect scene="1" dialogue="5"></redirect>
+            </option>
+         </options>
+      </Dialogue>
+      <Dialogue number="4">
+         <character>Risky</character>
+         <text>This is Scene 1 Dialogue 4 and should appear for Option A</text>
+         <redirect scene="-1" dialogue="-1"></redirect>
+      </Dialogue>
+      <Dialogue number="5">
+         <character>Risky</character>
+         <text>This is Scene 1 Dialogue 5 and should appear for Option B</text>
+         <redirect scene="-1" dialogue="-1"></redirect>
+      </Dialogue>
+   </Scene>
+</Document>
