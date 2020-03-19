@@ -34,7 +34,14 @@ public class LoadDialog : MonoBehaviour {
 				VNQuestion diaQuestion = null; //it should never be null, but won't compile unless set null
 				if (dialogue.Element("options") !=null)
 				{
-					diaQuestion = new VNQuestion(); // TODO
+					diaQuestion = new VNQuestion();
+					foreach (XElement option in dialogue.Element("options").Elements("option").ToList())
+					{
+
+						VNRedirect optionRedir = new VNRedirect(int.Parse(option.Element("redirect").Attribute("scene").Value),
+											int.Parse(option.Element("redirect").Attribute("dialogue").Value));
+						diaQuestion.vnOptions.Add(new VNOption(option.Element("option_text").Value,optionRedir));
+					}
 				}
 
 				VNDialogue vnDialogue = null; //it should never be null, but won't compile unless set null

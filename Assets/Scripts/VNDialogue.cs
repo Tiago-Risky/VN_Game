@@ -9,9 +9,9 @@ public class VNDialogue
     public string Character = "";
     public string Text = "";
     public bool hasRedirect = false;
-    public VNRedirect Redirect = null;
+    public VNRedirect Redirect;
     public bool isQuestion = false;
-    public VNQuestion Question = null;
+    public VNQuestion Question;
 
     /* This one has no redirection set, if no redirection is set it will
        skip to the next available dialogue/scene.

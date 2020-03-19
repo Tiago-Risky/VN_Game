@@ -32,5 +32,9 @@
          <text>This is Scene 1 Dialogue 5 and should appear for Option B</text>
          <redirect scene="-1" dialogue="-1"></redirect>
       </Dialogue>
+      <Dialogue number="6">
+         <character>Risky</character>
+         <text>This is Scene 1 Dialogue 6 and should never even appear</text>
+      </Dialogue>
    </Scene>
 </Document>

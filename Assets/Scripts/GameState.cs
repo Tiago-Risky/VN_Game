@@ -8,6 +8,9 @@ public class GameState : MonoBehaviour {
 
 	public Text dialogueBoxText;
 	public Text characterNameBoxText;
+	public Text optionAText;
+	public Text optionBText;
+	public GameObject QuestionBox;
 
 	private int currentScene = 1;
 	private int currentDialogue = 1;
@@ -23,9 +26,11 @@ public class GameState : MonoBehaviour {
 	}
 
 	void loadDialogue(int scene, int dialogue) {
+		Debug.Log("loadDialogue called with "+scene+" and "+dialogue);
 		if (scene == -1 && dialogue == -1)
 		{
 			SceneManager.LoadScene(sceneName: "EndScene");
+			return;
 		}
 
 		if (PersistentManagerScript.Instance.vnScenes[scene - 1].Dialogues.Count < dialogue) {
@@ -45,6 +50,18 @@ public class GameState : MonoBehaviour {
 
 		dialogueBoxText.text = vnDialogue.Text;
 		characterNameBoxText.text = vnDialogue.Character;
+		if (vnDialogue.isQuestion)
+		{
+			QuestionBox.SetActive(true);
+			optionAText.text = vnDialogue.Question.vnOptions[0].Text;
+			optionBText.text = vnDialogue.Question.vnOptions[1].Text;
+		}
+		else
+		{
+			QuestionBox.SetActive(false);
+		}
+		currentDialogue = dialogue;
+		currentScene = scene;
 	}
 
 	public void clickDialogue()
@@ -61,5 +78,17 @@ public class GameState : MonoBehaviour {
 				loadDialogue(currentScene, ++currentDialogue);
 			}
 		}
+	}
+
+	public void clickOptionA()
+	{
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
+		loadDialogue(vnDialogue.Question.vnOptions[0].Redirect.Scene, vnDialogue.Question.vnOptions[0].Redirect.Dialogue);
+	}
+
+	public void clickOptionB()
+	{
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
+		loadDialogue(vnDialogue.Question.vnOptions[1].Redirect.Scene, vnDialogue.Question.vnOptions[1].Redirect.Dialogue);
 	}
 }
