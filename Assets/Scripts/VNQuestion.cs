@@ -5,12 +5,18 @@ using System.Text;
 
 public class VNQuestion
 {
-    public List<VNOption> vnOptions;
+    private List<VNOption> vnOptions;
+    public List<VNOption> VnOptions
+    {
+        get {return vnOptions ?? (vnOptions = new List<VNOption>()); }
+    }
 
     public VNQuestion()
     {
-        vnOptions = new List<VNOption>();
+
     }
+
+    
 }
 
 public class VNOption

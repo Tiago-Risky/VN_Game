@@ -6,11 +6,16 @@ using System.Xml.Linq;
 public class VNScene
 {
     public int Number;
-    public List<VNDialogue> Dialogues;
+    private List<VNDialogue> dialogues;
+    public List<VNDialogue> Dialogues
+    {
+        get{return dialogues ?? (dialogues = new List<VNDialogue>());}
+    }
 
     public VNScene(int num)
     {
         Number = num;
-        Dialogues = new List<VNDialogue>();
     }
+
+    
 }

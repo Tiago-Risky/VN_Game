@@ -40,7 +40,7 @@ public class LoadDialog : MonoBehaviour {
 
 						VNRedirect optionRedir = new VNRedirect(int.Parse(option.Element("redirect").Attribute("scene").Value),
 											int.Parse(option.Element("redirect").Attribute("dialogue").Value));
-						diaQuestion.vnOptions.Add(new VNOption(option.Element("option_text").Value,optionRedir));
+						diaQuestion.VnOptions.Add(new VNOption(option.Element("option_text").Value,optionRedir));
 					}
 				}
 
@@ -56,7 +56,7 @@ public class LoadDialog : MonoBehaviour {
 					}
 					if (diaQuestion != null)
 					{
-						vnDialogue = new VNDialogue(diaNr, diaChar, diaText, diaQuestion);
+						vnDialogue = new VNDialogue(diaNr, diaChar, diaText, question: diaQuestion);
 					}
 				}
 
