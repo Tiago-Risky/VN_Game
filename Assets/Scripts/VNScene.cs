@@ -12,9 +12,9 @@ public class VNScene
         get{return dialogues ?? (dialogues = new List<VNDialogue>());}
     }
 
-    public VNScene(int num)
+    public VNScene(int number)
     {
-        Number = num;
+        Number = number;
     }
 
     

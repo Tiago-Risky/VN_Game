@@ -15,7 +15,7 @@ public class VNDialogue
        skip to the next available dialogue/scene.
        It also has no VNQuestion */
 
-    public VNDialogue(int number, string character, string text, VNRedirect redirect = null, VNQuestion question = null) {
+    public VNDialogue(int number, string character, string text, VNRedirect redirect, VNQuestion question) {
         Number = number;
         Character = character;
         Text = text;
@@ -23,11 +23,11 @@ public class VNDialogue
         Question = question;
     }
 
-    public bool isQuestion() { 
+    public bool IsQuestion() { 
         return Question != null;
     }
 
-    public bool hasRedirect() {
+    public bool HasRedirect() {
         return Redirect != null;
     }
 }

@@ -8,9 +8,9 @@ public class VNRedirect
     public int Scene;
     public int Dialogue;
 
-    public VNRedirect(int scn, int dia)
+    public VNRedirect(int scene, int dialogue)
     {
-        Scene = scn;
-        Dialogue = dia;
+        Scene = scene;
+        Dialogue = dialogue;
     }
 }

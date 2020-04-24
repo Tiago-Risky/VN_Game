@@ -20,45 +20,31 @@ public class LoadDialog : MonoBehaviour {
 			VNScene vnScene = new VNScene(int.Parse(scene.Attribute("number").Value));
 			foreach (XElement dialogue in scene.Elements("Dialogue").ToList())
 			{
-				int diaNr = int.Parse(dialogue.Attribute("number").Value);
-				string diaChar = dialogue.Element("character").Value;
-				string diaText = dialogue.Element("text").Value;
+				int dialogueNumber = int.Parse(dialogue.Attribute("number").Value);
+				string dialogueCharacter = dialogue.Element("character").Value;
+				string dialogueText = dialogue.Element("text").Value;
 
-				VNRedirect diaRedir = null; //it should never be null, but won't compile unless set null
+				VNRedirect dialogueRedirect = null;
 				if (dialogue.Element("redirect") != null)
 				{
-					diaRedir = new VNRedirect(int.Parse(dialogue.Element("redirect").Attribute("scene").Value),
+					dialogueRedirect = new VNRedirect(int.Parse(dialogue.Element("redirect").Attribute("scene").Value),
 											int.Parse(dialogue.Element("redirect").Attribute("dialogue").Value));
 				}
 
-				VNQuestion diaQuestion = null; //it should never be null, but won't compile unless set null
+				VNQuestion dialogueQuestion = null;
 				if (dialogue.Element("options") !=null)
 				{
-					diaQuestion = new VNQuestion();
+					dialogueQuestion = new VNQuestion();
 					foreach (XElement option in dialogue.Element("options").Elements("option").ToList())
 					{
 
 						VNRedirect optionRedir = new VNRedirect(int.Parse(option.Element("redirect").Attribute("scene").Value),
 											int.Parse(option.Element("redirect").Attribute("dialogue").Value));
-						diaQuestion.VnOptions.Add(new VNOption(option.Element("option_text").Value,optionRedir));
+						dialogueQuestion.Options.Add(new VNOption(option.Element("option_text").Value,optionRedir));
 					}
 				}
 
-				VNDialogue vnDialogue = null; //it should never be null, but won't compile unless set null
-				if (diaRedir == null && diaQuestion == null)
-				{
-					vnDialogue = new VNDialogue(diaNr, diaChar, diaText);
-				}
-				else {
-					if (diaRedir != null)
-					{
-						vnDialogue = new VNDialogue(diaNr, diaChar, diaText, diaRedir);
-					}
-					if (diaQuestion != null)
-					{
-						vnDialogue = new VNDialogue(diaNr, diaChar, diaText, question: diaQuestion);
-					}
-				}
+				VNDialogue vnDialogue = new VNDialogue(dialogueNumber, dialogueCharacter, dialogueText, dialogueRedirect, dialogueQuestion);
 
 				vnScene.Dialogues.Add(vnDialogue);
 			}

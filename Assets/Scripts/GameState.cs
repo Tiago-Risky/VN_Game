@@ -50,11 +50,11 @@ public class GameState : MonoBehaviour {
 
 		dialogueBoxText.text = vnDialogue.Text;
 		characterNameBoxText.text = vnDialogue.Character;
-		if (vnDialogue.isQuestion())
+		if (vnDialogue.IsQuestion())
 		{
 			QuestionBox.SetActive(true);
-			optionAText.text = vnDialogue.Question.VnOptions[0].Text;
-			optionBText.text = vnDialogue.Question.VnOptions[1].Text;
+			optionAText.text = vnDialogue.Question.Options[0].Text;
+			optionBText.text = vnDialogue.Question.Options[1].Text;
 		}
 		else
 		{
@@ -67,9 +67,9 @@ public class GameState : MonoBehaviour {
 	public void clickDialogue()
 	{
 		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
-		if (!vnDialogue.isQuestion())
+		if (!vnDialogue.IsQuestion())
 		{
-			if (vnDialogue.hasRedirect())
+			if (vnDialogue.HasRedirect())
 			{
 				loadDialogue(vnDialogue.Redirect.Scene, vnDialogue.Redirect.Dialogue);
 			}
@@ -83,12 +83,12 @@ public class GameState : MonoBehaviour {
 	public void clickOptionA()
 	{
 		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
-		loadDialogue(vnDialogue.Question.VnOptions[0].Redirect.Scene, vnDialogue.Question.VnOptions[0].Redirect.Dialogue);
+		loadDialogue(vnDialogue.Question.Options[0].Redirect.Scene, vnDialogue.Question.Options[0].Redirect.Dialogue);
 	}
 
 	public void clickOptionB()
 	{
 		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
-		loadDialogue(vnDialogue.Question.VnOptions[1].Redirect.Scene, vnDialogue.Question.VnOptions[1].Redirect.Dialogue);
+		loadDialogue(vnDialogue.Question.Options[1].Redirect.Scene, vnDialogue.Question.Options[1].Redirect.Dialogue);
 	}
 }

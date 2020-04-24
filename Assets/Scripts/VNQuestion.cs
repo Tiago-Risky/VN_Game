@@ -6,7 +6,7 @@ using System.Text;
 public class VNQuestion
 {
     private List<VNOption> vnOptions;
-    public List<VNOption> VnOptions
+    public List<VNOption> Options
     {
         get {return vnOptions ?? (vnOptions = new List<VNOption>()); }
     }
