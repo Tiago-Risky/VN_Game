@@ -13,13 +13,13 @@ public class LoadDialog : MonoBehaviour {
 		Debug.Log("Loading XML File");
 		
 		XElement file = XElement.Load("Assets/Content/GameDialog1.xml", LoadOptions.None);
-        List<XElement> scenes = file.Elements("Scene").ToList();
+        List<XElement> chapters = file.Elements("Chapter").ToList();
 
-		foreach (XElement scene in scenes)
+		foreach (XElement chapter in chapters)
 		{
-			VNScene vnScene = new VNScene();
-			int vnSceneNumber = int.Parse(scene.Attribute("number").Value);
-			foreach (XElement dialogue in scene.Elements("Dialogue").ToList())
+			VNChapter vnChapter = new VNChapter();
+			int vnChapterNumber = int.Parse(chapter.Attribute("number").Value);
+			foreach (XElement dialogue in chapter.Elements("Dialogue").ToList())
 			{
 				int dialogueNumber = int.Parse(dialogue.Attribute("number").Value);
 				string dialogueCharacter = dialogue.Element("character").Value;
@@ -28,7 +28,7 @@ public class LoadDialog : MonoBehaviour {
 				VNRedirect dialogueRedirect = null;
 				if (dialogue.Element("redirect") != null)
 				{
-					dialogueRedirect = new VNRedirect(int.Parse(dialogue.Element("redirect").Attribute("scene").Value),
+					dialogueRedirect = new VNRedirect(int.Parse(dialogue.Element("redirect").Attribute("chapter").Value),
 											int.Parse(dialogue.Element("redirect").Attribute("dialogue").Value));
 				}
 
@@ -39,7 +39,7 @@ public class LoadDialog : MonoBehaviour {
 					foreach (XElement option in dialogue.Element("options").Elements("option").ToList())
 					{
 
-						VNRedirect optionRedir = new VNRedirect(int.Parse(option.Element("redirect").Attribute("scene").Value),
+						VNRedirect optionRedir = new VNRedirect(int.Parse(option.Element("redirect").Attribute("chapter").Value),
 											int.Parse(option.Element("redirect").Attribute("dialogue").Value));
 						dialogueQuestion.Options.Add(new VNOption(option.Element("option_text").Value,optionRedir));
 					}
@@ -47,14 +47,14 @@ public class LoadDialog : MonoBehaviour {
 
 				VNDialogue vnDialogue = new VNDialogue(dialogueCharacter, dialogueText, dialogueRedirect, dialogueQuestion);
 
-				vnScene.Dialogues.Add(dialogueNumber, vnDialogue);
+				vnChapter.Dialogues.Add(dialogueNumber, vnDialogue);
 			}
 
-			PersistentManagerScript.Instance.SceneList.Add(vnSceneNumber, vnScene);
+			PersistentManagerScript.Instance.ChapterList.Add(vnChapterNumber, vnChapter);
 		}
 
 		Debug.Log("Loading XML File Done");
-		SceneManager.LoadScene(sceneName:"GameScene"); //Changing to the GameScene once the loading is done
+		SceneManager.LoadScene(sceneName:"GameScene"); //Changing to the GameChapter once the loading is done
 
 	}
 	

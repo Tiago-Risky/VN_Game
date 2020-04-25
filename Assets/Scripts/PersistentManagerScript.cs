@@ -9,11 +9,11 @@ public class PersistentManagerScript : MonoBehaviour {
         private set;
     }
 
-    public Dictionary<int, VNScene> SceneList
+    public Dictionary<int, VNChapter> ChapterList
     {
-        get {return sceneList ?? (sceneList = new Dictionary<int, VNScene>());}
+        get {return chapterList ?? (chapterList = new Dictionary<int, VNChapter>());}
     }
-    private Dictionary<int, VNScene> sceneList;
+    private Dictionary<int, VNChapter> chapterList;
 
     private void Awake()
     {

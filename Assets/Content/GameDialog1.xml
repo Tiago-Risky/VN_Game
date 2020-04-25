@@ -1,5 +1,5 @@
 <Document>
-   <Scene number="1">
+   <Chapter number="1">
       <Dialogue number="1">
          <character>Risky</character>
          <text>Hello and welcome to AvarumTales! This is a test dialogue meant to introduce you to the game.</text>
@@ -14,27 +14,33 @@
          <options>
             <option>
                <option_text>This is option A</option_text>
-               <redirect scene="1" dialogue="4"></redirect>
+               <redirect chapter="1" dialogue="4"></redirect>
             </option>
             <option>
                <option_text>This is option B</option_text>
-               <redirect scene="1" dialogue="5"></redirect>
+               <redirect chapter="1" dialogue="5"></redirect>
             </option>
          </options>
       </Dialogue>
       <Dialogue number="4">
          <character>Risky</character>
-         <text>This is Scene 1 Dialogue 4 and should appear for Option A</text>
-         <redirect scene="-1" dialogue="-1"></redirect>
+         <text>This is Chapter 1 Dialogue 4 and should appear for Option A</text>
+         <redirect chapter="1" dialogue="7"></redirect>
       </Dialogue>
       <Dialogue number="5">
          <character>Risky</character>
-         <text>This is Scene 1 Dialogue 5 and should appear for Option B</text>
-         <redirect scene="-1" dialogue="-1"></redirect>
+         <text>This is Chapter 1 Dialogue 5 and should appear for Option B</text>
+         <redirect chapter="-1" dialogue="-1"></redirect>
       </Dialogue>
       <Dialogue number="6">
          <character>Risky</character>
-         <text>This is Scene 1 Dialogue 6 and should never even appear</text>
+         <text>This is Chapter 1 Dialogue 6 and should never even appear</text>
       </Dialogue>
-   </Scene>
+   </Chapter>
+   <Chapter number="2">
+      <Dialogue number="1">
+         <character>Gui</character>
+         <text>Muahahaha</text>
+      </Dialogue>
+   </Chapter>
 </Document>

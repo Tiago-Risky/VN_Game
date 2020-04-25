@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-public class VNScene
+public class VNChapter
 {
     private Dictionary<int, VNDialogue> dialogues;
     public Dictionary<int, VNDialogue> Dialogues
@@ -11,7 +11,7 @@ public class VNScene
         get{return dialogues ?? (dialogues = new Dictionary<int, VNDialogue>());}
     }
 
-    public VNScene()
+    public VNChapter()
     {
 
     }

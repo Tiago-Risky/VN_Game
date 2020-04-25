@@ -5,12 +5,12 @@ using System.Text;
 
 public class VNRedirect
 {
-    public int Scene;
+    public int Chapter;
     public int Dialogue;
 
-    public VNRedirect(int scene, int dialogue)
+    public VNRedirect(int chapter, int dialogue)
     {
-        Scene = scene;
+        Chapter = chapter;
         Dialogue = dialogue;
     }
 }

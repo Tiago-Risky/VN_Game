@@ -12,7 +12,7 @@ public class GameState : MonoBehaviour {
 	public Text optionBText;
 	public GameObject QuestionBox;
 
-	private int currentScene = 1;
+	private int currentChapter = 1;
 	private int currentDialogue = 1;
 
 	// Use this for initialization
@@ -25,9 +25,9 @@ public class GameState : MonoBehaviour {
 		
 	}
 
-	void loadDialogue(int scene, int dialogue) {
-		Debug.Log("loadDialogue called with "+scene+" and "+dialogue);
-		if (scene == -1 && dialogue == -1)
+	void loadDialogue(int chapter, int dialogue) {
+		Debug.Log("loadDialogue called with "+chapter+" and "+dialogue);
+		if (chapter == -1 && dialogue == -1)
 		{
 			SceneManager.LoadScene(sceneName: "EndScene");
 			return;
@@ -35,24 +35,24 @@ public class GameState : MonoBehaviour {
 
 		/* These two calls require the XML file to be strictly following the patterns.
 		 * We can either enforce the patterns (and check them) or we can remove this,
-		 * enforcing new patterns (every scene jump has to has a Redirection, and every
-		 * ending has to call scene -1 and dialogue -1).
+		 * enforcing new patterns (every chapter jump has to has a Redirection, and every
+		 * ending has to call chapter -1 and dialogue -1).
 		 */
 
-		if (PersistentManagerScript.Instance.SceneList[scene].Dialogues.Count < dialogue) {
-			scene++;
-			currentScene = scene;
+		if (PersistentManagerScript.Instance.ChapterList[chapter].Dialogues.Count < dialogue) {
+			chapter++;
+			currentChapter = chapter;
 			dialogue = 1;
 			currentDialogue = dialogue;
 		}
 
-		if (PersistentManagerScript.Instance.SceneList.Count < scene) {
+		if (PersistentManagerScript.Instance.ChapterList.Count < chapter) {
 			SceneManager.LoadScene(sceneName: "EndScene");
 			return;
 		}
 
-		VNScene vnScene = PersistentManagerScript.Instance.SceneList[scene];
-		VNDialogue vnDialogue = vnScene.Dialogues[dialogue];
+		VNChapter vnChapter = PersistentManagerScript.Instance.ChapterList[chapter];
+		VNDialogue vnDialogue = vnChapter.Dialogues[dialogue];
 
 		dialogueBoxText.text = vnDialogue.Text;
 		characterNameBoxText.text = vnDialogue.Character;
@@ -67,34 +67,34 @@ public class GameState : MonoBehaviour {
 			QuestionBox.SetActive(false);
 		}
 		currentDialogue = dialogue;
-		currentScene = scene;
+		currentChapter = chapter;
 	}
 
 	public void clickDialogue()
 	{
-		VNDialogue vnDialogue = PersistentManagerScript.Instance.SceneList[currentScene].Dialogues[currentDialogue];
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.ChapterList[currentChapter].Dialogues[currentDialogue];
 		if (!vnDialogue.IsQuestion())
 		{
 			if (vnDialogue.HasRedirect())
 			{
-				loadDialogue(vnDialogue.Redirect.Scene, vnDialogue.Redirect.Dialogue);
+				loadDialogue(vnDialogue.Redirect.Chapter, vnDialogue.Redirect.Dialogue);
 			}
 			else
 			{
-				loadDialogue(currentScene, ++currentDialogue);
+				loadDialogue(currentChapter, ++currentDialogue);
 			}
 		}
 	}
 
 	public void clickOptionA()
 	{
-		VNDialogue vnDialogue = PersistentManagerScript.Instance.SceneList[currentScene].Dialogues[currentDialogue];
-		loadDialogue(vnDialogue.Question.Options[0].Redirect.Scene, vnDialogue.Question.Options[0].Redirect.Dialogue);
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.ChapterList[currentChapter].Dialogues[currentDialogue];
+		loadDialogue(vnDialogue.Question.Options[0].Redirect.Chapter, vnDialogue.Question.Options[0].Redirect.Dialogue);
 	}
 
 	public void clickOptionB()
 	{
-		VNDialogue vnDialogue = PersistentManagerScript.Instance.SceneList[currentScene].Dialogues[currentDialogue];
-		loadDialogue(vnDialogue.Question.Options[1].Redirect.Scene, vnDialogue.Question.Options[1].Redirect.Dialogue);
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.ChapterList[currentChapter].Dialogues[currentDialogue];
+		loadDialogue(vnDialogue.Question.Options[1].Redirect.Chapter, vnDialogue.Question.Options[1].Redirect.Dialogue);
 	}
 }
