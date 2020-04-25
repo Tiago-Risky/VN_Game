@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PersistentManagerScript : MonoBehaviour {
@@ -9,22 +8,18 @@ public class PersistentManagerScript : MonoBehaviour {
         private set;
     }
 
-    public Dictionary<int, VNChapter> ChapterList
-    {
-        get {return chapterList ?? (chapterList = new Dictionary<int, VNChapter>());}
+    public Dictionary<int, VNChapter> ChapterList {
+        get { return chapterList ?? (chapterList = new Dictionary<int, VNChapter>()); }
     }
     private Dictionary<int, VNChapter> chapterList;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
+    private void Awake() {
+        if (Instance == null) {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
 
-        else
-        {
+        else {
             Destroy(gameObject);
         }
     }

@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-public class VNQuestion
-{
+public class VNQuestion {
     private List<VNOption> vnOptions;
-    public List<VNOption> Options
-    {
-        get {return vnOptions ?? (vnOptions = new List<VNOption>()); }
+    public List<VNOption> Options {
+        get { return vnOptions ?? (vnOptions = new List<VNOption>()); }
     }
 
-    public VNQuestion()
-    {
+    public VNQuestion() {
 
     }
-
-    
 }
 
-public class VNOption
-{
+public class VNOption {
     public VNRedirect Redirect;
     public string Text;
 

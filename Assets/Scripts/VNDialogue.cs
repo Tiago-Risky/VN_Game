@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-
-public class VNDialogue
-{
+﻿public class VNDialogue {
     public string Character = "";
     public string Text = "";
     public VNRedirect Redirect;
@@ -21,7 +15,7 @@ public class VNDialogue
         Question = question;
     }
 
-    public bool IsQuestion() { 
+    public bool IsQuestion() {
         return Question != null;
     }
 
