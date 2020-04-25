@@ -5,7 +5,6 @@ using System.Xml.Linq;
 
 public class VNDialogue
 {
-    public int Number;
     public string Character = "";
     public string Text = "";
     public VNRedirect Redirect;
@@ -15,8 +14,7 @@ public class VNDialogue
        skip to the next available dialogue/scene.
        It also has no VNQuestion */
 
-    public VNDialogue(int number, string character, string text, VNRedirect redirect, VNQuestion question) {
-        Number = number;
+    public VNDialogue(string character, string text, VNRedirect redirect, VNQuestion question) {
         Character = character;
         Text = text;
         Redirect = redirect;

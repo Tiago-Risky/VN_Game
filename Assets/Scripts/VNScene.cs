@@ -5,16 +5,15 @@ using System.Xml.Linq;
 
 public class VNScene
 {
-    public int Number;
-    private List<VNDialogue> dialogues;
-    public List<VNDialogue> Dialogues
+    private Dictionary<int, VNDialogue> dialogues;
+    public Dictionary<int, VNDialogue> Dialogues
     {
-        get{return dialogues ?? (dialogues = new List<VNDialogue>());}
+        get{return dialogues ?? (dialogues = new Dictionary<int, VNDialogue>());}
     }
 
-    public VNScene(int number)
+    public VNScene()
     {
-        Number = number;
+
     }
 
     

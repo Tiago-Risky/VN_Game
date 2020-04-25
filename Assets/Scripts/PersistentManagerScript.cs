@@ -9,20 +9,17 @@ public class PersistentManagerScript : MonoBehaviour {
         private set;
     }
 
-    public int Value = 0;
-
-    public List<VNScene> vnScenes;
+    public Dictionary<int, VNScene> SceneList
+    {
+        get {return sceneList ?? (sceneList = new Dictionary<int, VNScene>());}
+    }
+    private Dictionary<int, VNScene> sceneList;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-
-            //Initializing here so we don't have to do it later
-            vnScenes = new List<VNScene>();
-
-
             DontDestroyOnLoad(gameObject);
         }
 

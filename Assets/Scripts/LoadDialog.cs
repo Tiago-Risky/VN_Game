@@ -17,7 +17,8 @@ public class LoadDialog : MonoBehaviour {
 
 		foreach (XElement scene in scenes)
 		{
-			VNScene vnScene = new VNScene(int.Parse(scene.Attribute("number").Value));
+			VNScene vnScene = new VNScene();
+			int vnSceneNumber = int.Parse(scene.Attribute("number").Value);
 			foreach (XElement dialogue in scene.Elements("Dialogue").ToList())
 			{
 				int dialogueNumber = int.Parse(dialogue.Attribute("number").Value);
@@ -44,12 +45,12 @@ public class LoadDialog : MonoBehaviour {
 					}
 				}
 
-				VNDialogue vnDialogue = new VNDialogue(dialogueNumber, dialogueCharacter, dialogueText, dialogueRedirect, dialogueQuestion);
+				VNDialogue vnDialogue = new VNDialogue(dialogueCharacter, dialogueText, dialogueRedirect, dialogueQuestion);
 
-				vnScene.Dialogues.Add(vnDialogue);
+				vnScene.Dialogues.Add(dialogueNumber, vnDialogue);
 			}
 
-			PersistentManagerScript.Instance.vnScenes.Add(vnScene);
+			PersistentManagerScript.Instance.SceneList.Add(vnSceneNumber, vnScene);
 		}
 
 		Debug.Log("Loading XML File Done");

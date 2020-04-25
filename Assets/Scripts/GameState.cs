@@ -33,20 +33,26 @@ public class GameState : MonoBehaviour {
 			return;
 		}
 
-		if (PersistentManagerScript.Instance.vnScenes[scene - 1].Dialogues.Count < dialogue) {
+		/* These two calls require the XML file to be strictly following the patterns.
+		 * We can either enforce the patterns (and check them) or we can remove this,
+		 * enforcing new patterns (every scene jump has to has a Redirection, and every
+		 * ending has to call scene -1 and dialogue -1).
+		 */
+
+		if (PersistentManagerScript.Instance.SceneList[scene].Dialogues.Count < dialogue) {
 			scene++;
 			currentScene = scene;
 			dialogue = 1;
 			currentDialogue = dialogue;
 		}
 
-		if (PersistentManagerScript.Instance.vnScenes.Count < scene) {
+		if (PersistentManagerScript.Instance.SceneList.Count < scene) {
 			SceneManager.LoadScene(sceneName: "EndScene");
 			return;
 		}
 
-		VNScene vnScene = PersistentManagerScript.Instance.vnScenes[scene - 1];
-		VNDialogue vnDialogue = vnScene.Dialogues[dialogue - 1];
+		VNScene vnScene = PersistentManagerScript.Instance.SceneList[scene];
+		VNDialogue vnDialogue = vnScene.Dialogues[dialogue];
 
 		dialogueBoxText.text = vnDialogue.Text;
 		characterNameBoxText.text = vnDialogue.Character;
@@ -66,7 +72,7 @@ public class GameState : MonoBehaviour {
 
 	public void clickDialogue()
 	{
-		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.SceneList[currentScene].Dialogues[currentDialogue];
 		if (!vnDialogue.IsQuestion())
 		{
 			if (vnDialogue.HasRedirect())
@@ -82,13 +88,13 @@ public class GameState : MonoBehaviour {
 
 	public void clickOptionA()
 	{
-		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.SceneList[currentScene].Dialogues[currentDialogue];
 		loadDialogue(vnDialogue.Question.Options[0].Redirect.Scene, vnDialogue.Question.Options[0].Redirect.Dialogue);
 	}
 
 	public void clickOptionB()
 	{
-		VNDialogue vnDialogue = PersistentManagerScript.Instance.vnScenes[currentScene - 1].Dialogues[currentDialogue - 1];
+		VNDialogue vnDialogue = PersistentManagerScript.Instance.SceneList[currentScene].Dialogues[currentDialogue];
 		loadDialogue(vnDialogue.Question.Options[1].Redirect.Scene, vnDialogue.Question.Options[1].Redirect.Dialogue);
 	}
 }
