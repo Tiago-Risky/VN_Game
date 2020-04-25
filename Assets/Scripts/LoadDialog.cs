@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VisualNovel;
 
 public class LoadDialog : MonoBehaviour {
 

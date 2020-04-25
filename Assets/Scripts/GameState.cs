@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VisualNovel;
 
 public class GameState : MonoBehaviour {
 
