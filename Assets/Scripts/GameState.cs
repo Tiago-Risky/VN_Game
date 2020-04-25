@@ -51,15 +51,15 @@ public class GameState : MonoBehaviour {
             return;
         }
 
-        VNChapter vnChapter = persistent.ChapterList[chapter];
-        VNDialogue vnDialogue = vnChapter.Dialogues[dialogue];
+        Chapter Chapter = persistent.ChapterList[chapter];
+        Dialogue Dialogue = Chapter.Dialogues[dialogue];
 
-        dialogueBoxText.text = vnDialogue.Text;
-        characterNameBoxText.text = vnDialogue.Character;
-        if (vnDialogue.IsQuestion()) {
+        dialogueBoxText.text = Dialogue.Text;
+        characterNameBoxText.text = Dialogue.Character;
+        if (Dialogue.IsQuestion()) {
             QuestionBox.SetActive(true);
-            optionAText.text = vnDialogue.Question.Options[0].Text;
-            optionBText.text = vnDialogue.Question.Options[1].Text;
+            optionAText.text = Dialogue.Question.Options[0].Text;
+            optionBText.text = Dialogue.Question.Options[1].Text;
         }
         else {
             QuestionBox.SetActive(false);
@@ -69,10 +69,10 @@ public class GameState : MonoBehaviour {
     }
 
     public void clickDialogue() {
-        VNDialogue vnDialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
-        if (!vnDialogue.IsQuestion()) {
-            if (vnDialogue.HasRedirect()) {
-                loadDialogue(vnDialogue.Redirect.Chapter, vnDialogue.Redirect.Dialogue);
+        Dialogue Dialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
+        if (!Dialogue.IsQuestion()) {
+            if (Dialogue.HasRedirect()) {
+                loadDialogue(Dialogue.Redirect.Chapter, Dialogue.Redirect.Dialogue);
             }
             else {
                 loadDialogue(currentChapter, ++currentDialogue);
@@ -81,12 +81,12 @@ public class GameState : MonoBehaviour {
     }
 
     public void clickOptionA() {
-        VNDialogue vnDialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
-        loadDialogue(vnDialogue.Question.Options[0].Redirect.Chapter, vnDialogue.Question.Options[0].Redirect.Dialogue);
+        Dialogue Dialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
+        loadDialogue(Dialogue.Question.Options[0].Redirect.Chapter, Dialogue.Question.Options[0].Redirect.Dialogue);
     }
 
     public void clickOptionB() {
-        VNDialogue vnDialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
-        loadDialogue(vnDialogue.Question.Options[1].Redirect.Chapter, vnDialogue.Question.Options[1].Redirect.Dialogue);
+        Dialogue Dialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
+        loadDialogue(Dialogue.Question.Options[1].Redirect.Chapter, Dialogue.Question.Options[1].Redirect.Dialogue);
     }
 }

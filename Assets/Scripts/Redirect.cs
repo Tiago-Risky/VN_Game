@@ -1,9 +1,9 @@
 ﻿namespace VisualNovel {
-    public class VNRedirect {
+    public class Redirect {
         public int Chapter;
         public int Dialogue;
 
-        public VNRedirect(int chapter, int dialogue) {
+        public Redirect(int chapter, int dialogue) {
             Chapter = chapter;
             Dialogue = dialogue;
         }
