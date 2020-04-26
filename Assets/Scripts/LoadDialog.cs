@@ -8,15 +8,16 @@ using VisualNovel;
 
 public class LoadDialog : MonoBehaviour {
 
-    public Text statusText;
+    public TextAsset XMLFile;
+    public Text StatusTextbox;
     private bool Ready = false;
-    private float timeToNextScene = 3f;
+    public float TimeToNextScene = 3f;
 
     void Start() {
         Debug.Log("Loading XML File");
-        statusText.text = "Loading game files";
+        StatusTextbox.text = "Loading game files";
 
-        XElement file = XElement.Load("Assets/Content/GameDialog1.xml", LoadOptions.None);
+        XElement file = XElement.Parse(XMLFile.text);
         List<XElement> chapters = file.Elements("Chapter").ToList();
 
         foreach (XElement chapter in chapters) {
@@ -53,14 +54,14 @@ public class LoadDialog : MonoBehaviour {
         }
 
         Debug.Log("Loading XML File Done");
-        statusText.text = "Game files loaded";
-        Ready = true; // This will signal to start counting the timeToNextScene down.
+        StatusTextbox.text = "Game files loaded";
+        Ready = true; // This will signal to start counting the TimeToNextScene down.
     }
 
     void Update() {
         if (Ready) {
-            timeToNextScene -= Time.deltaTime;
-            if (timeToNextScene <= 0) {
+            TimeToNextScene -= Time.deltaTime;
+            if (TimeToNextScene <= 0) {
                 Ready = false;
                 SceneManager.LoadScene(sceneName: "GameScene"); //Changing to the GameScene once the timer is done
             }

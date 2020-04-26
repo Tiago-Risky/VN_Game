@@ -228,7 +228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac680887bb0bc5418b81f1c70d356cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusText: {fileID: 568359982}
+  XMLFile: {fileID: 4900000, guid: b4a6dce0f0e04274db78e03bba4d87b3, type: 3}
+  StatusTextbox: {fileID: 568359982}
+  TimeToNextScene: 3
 --- !u!114 &1459095658
 MonoBehaviour:
   m_ObjectHideFlags: 0
