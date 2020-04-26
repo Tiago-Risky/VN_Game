@@ -3,12 +3,18 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using VisualNovel;
 
 public class LoadDialog : MonoBehaviour {
 
+    public Text statusText;
+    private bool Ready = false;
+    private float timeToNextScene = 3f;
+
     void Start() {
         Debug.Log("Loading XML File");
+        statusText.text = "Loading game files";
 
         XElement file = XElement.Load("Assets/Content/GameDialog1.xml", LoadOptions.None);
         List<XElement> chapters = file.Elements("Chapter").ToList();
@@ -47,11 +53,18 @@ public class LoadDialog : MonoBehaviour {
         }
 
         Debug.Log("Loading XML File Done");
-        SceneManager.LoadScene(sceneName: "GameScene"); //Changing to the GameScene once the loading is done
-
+        statusText.text = "Game files loaded";
+        Ready = true; // This will signal to start counting the timeToNextScene down.
     }
 
     void Update() {
+        if (Ready) {
+            timeToNextScene -= Time.deltaTime;
+            if (timeToNextScene <= 0) {
+                Ready = false;
+                SceneManager.LoadScene(sceneName: "GameScene"); //Changing to the GameScene once the timer is done
+            }
+        }
 
     }
 }
