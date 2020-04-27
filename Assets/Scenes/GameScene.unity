@@ -382,7 +382,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueBoxText: {fileID: 391152706}
   characterNameBoxText: {fileID: 726780450}
-  QuestionBox: {fileID: 935479579}
+  TwoOptionsBox: {fileID: 935479579}
+  ThreeOptionsBox: {fileID: 1152148428}
+  FourOptionsBox: {fileID: 2123260529}
 --- !u!114 &311049249
 MonoBehaviour:
   m_ObjectHideFlags: 0

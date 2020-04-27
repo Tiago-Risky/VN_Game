@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VisualNovel;
@@ -9,12 +10,24 @@ public class GameState : MonoBehaviour {
 
     public Text dialogueBoxText;
     public Text characterNameBoxText;
-    public GameObject QuestionBox;
+    public GameObject TwoOptionsBox;
+    public GameObject ThreeOptionsBox;
+    public GameObject FourOptionsBox;
 
     private int CurrentChapterNumber = 1;
     private int CurrentDialogueNumber = 1;
     private Chapter CurrentChapter;
     private Dialogue CurrentDialogue;
+    private Dictionary<int, GameObject> optionsBoxes;
+    private Dictionary<int, GameObject> OptionsBoxes {
+        get {
+            return optionsBoxes ?? (optionsBoxes = new Dictionary<int, GameObject> {
+                    { 2, TwoOptionsBox },
+                    { 3, ThreeOptionsBox },
+                    { 4, FourOptionsBox }
+                });
+        }
+    }
 
     // Use this for initialization
     void Start() {
@@ -56,15 +69,16 @@ public class GameState : MonoBehaviour {
         characterNameBoxText.text = CurrentDialogue.Character;
 
         if (CurrentDialogue.IsQuestion()) {
-            QuestionBox.SetActive(true);
+            int NumberOfOptions = CurrentDialogue.Question.Options.Count;
+            setActiveOptionsBoxes(NumberOfOptions);
             for (int x = 0; x < CurrentDialogue.Question.Options.Count; x++) {
-                GameObject OptionButton = QuestionBox.transform.GetChild(x).gameObject;
+                GameObject OptionButton = OptionsBoxes[NumberOfOptions].transform.GetChild(x).gameObject;
                 Text TextField = OptionButton.transform.GetChild(0).GetComponent<Text>();
                 TextField.text = CurrentDialogue.Question.Options[x].Text;
             }
         }
         else {
-            QuestionBox.SetActive(false);
+            setActiveOptionsBoxes();
         }
 
     }
@@ -84,5 +98,18 @@ public class GameState : MonoBehaviour {
     public void clickOption(int number) {
         loadDialogue(CurrentDialogue.Question.Options[number].Redirect.Chapter,
                      CurrentDialogue.Question.Options[number].Redirect.Dialogue);
+    }
+
+    private void setActiveOptionsBoxes(int NumberOfOptions = 0) {
+        foreach (KeyValuePair<int, GameObject> optionsBox in OptionsBoxes) {
+            optionsBox.Value.SetActive(false);
+        }
+
+        if (!OptionsBoxes.ContainsKey(NumberOfOptions)) {
+            return;
+        }
+        else {
+            OptionsBoxes[NumberOfOptions].SetActive(true);
+        }
     }
 }

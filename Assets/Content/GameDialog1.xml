@@ -25,7 +25,7 @@
       <Dialogue number="4">
          <character>Risky</character>
          <text>This is Chapter 1 Dialogue 4 and should appear for Option A</text>
-         <redirect chapter="1" dialogue="7"></redirect>
+         <redirect chapter="1" dialogue="6"></redirect>
       </Dialogue>
       <Dialogue number="5">
          <character>Risky</character>
@@ -34,7 +34,47 @@
       </Dialogue>
       <Dialogue number="6">
          <character>Risky</character>
-         <text>This is Chapter 1 Dialogue 6 and should never even appear</text>
+         <text>This is C1/D6 and should appear after C1/D4</text>
+      </Dialogue>
+      <Dialogue number="7">
+         <character>Risky</character>
+         <text>Now this question has 3 options instead</text>
+         <options>
+            <option>
+               <option_text>This is option A</option_text>
+               <redirect chapter="1" dialogue="8"></redirect>
+            </option>
+            <option>
+               <option_text>This is option B</option_text>
+               <redirect chapter="-1" dialogue="-1"></redirect>
+            </option>
+            <option>
+               <option_text>This is option C</option_text>
+               <redirect chapter="2" dialogue="1"></redirect>
+            </option>
+         </options>
+      </Dialogue>
+      <Dialogue number="8">
+         <character>Risky</character>
+         <text>Now this question has 4 options instead, and should appear after selecting option A on C1/D7</text>
+         <options>
+            <option>
+               <option_text>This is option A</option_text>
+               <redirect chapter="1" dialogue="9"></redirect>
+            </option>
+            <option>
+               <option_text>This is option B</option_text>
+               <redirect chapter="-1" dialogue="-1"></redirect>
+            </option>
+            <option>
+               <option_text>This is option C</option_text>
+               <redirect chapter="2" dialogue="1"></redirect>
+            </option>
+            <option>
+               <option_text>This is option D</option_text>
+               <redirect chapter="-1" dialogue="-1"></redirect>
+            </option>
+         </options>
       </Dialogue>
    </Chapter>
    <Chapter number="2">
