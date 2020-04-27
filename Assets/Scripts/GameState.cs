@@ -9,12 +9,12 @@ public class GameState : MonoBehaviour {
 
     public Text dialogueBoxText;
     public Text characterNameBoxText;
-    public Text optionAText;
-    public Text optionBText;
     public GameObject QuestionBox;
 
-    private int currentChapter = 1;
-    private int currentDialogue = 1;
+    private int CurrentChapterNumber = 1;
+    private int CurrentDialogueNumber = 1;
+    private Chapter CurrentChapter;
+    private Dialogue CurrentDialogue;
 
     // Use this for initialization
     void Start() {
@@ -26,67 +26,63 @@ public class GameState : MonoBehaviour {
 
     }
 
-    void loadDialogue(int chapter, int dialogue) {
-        Debug.Log("loadDialogue called with " + chapter + " and " + dialogue);
-        if (chapter == -1 && dialogue == -1) {
+    void loadDialogue(int ChapterNumber, int DialogueNumber) {
+        Debug.Log("loadDialogue called with " + ChapterNumber + " and " + DialogueNumber);
+
+        // Calling -1 for chapter and dialogue moves to EndScene
+        if (ChapterNumber == -1 && DialogueNumber == -1) {
             SceneManager.LoadScene(sceneName: "EndScene");
             return;
         }
 
-        /* These two calls require the XML file to be strictly following the patterns.
-		 * We can either enforce the patterns (and check them) or we can remove this,
-		 * enforcing new patterns (every chapter jump has to has a Redirection, and every
-		 * ending has to call chapter -1 and dialogue -1).
-		 */
-
-        if (persistent.ChapterList[chapter].Dialogues.Count < dialogue) {
-            chapter++;
-            currentChapter = chapter;
-            dialogue = 1;
-            currentDialogue = dialogue;
+        // If this was the last dialogue in the chapter, move to next chapter
+        if (persistent.ChapterList[ChapterNumber].Dialogues.Count < DialogueNumber) {
+            ChapterNumber++;
+            DialogueNumber = 1;
         }
 
-        if (persistent.ChapterList.Count < chapter) {
+        // If this was the last chapter, move to EndScene
+        if (persistent.ChapterList.Count < ChapterNumber) {
             SceneManager.LoadScene(sceneName: "EndScene");
             return;
         }
 
-        Chapter Chapter = persistent.ChapterList[chapter];
-        Dialogue Dialogue = Chapter.Dialogues[dialogue];
+        CurrentChapterNumber = ChapterNumber;
+        CurrentDialogueNumber = DialogueNumber;
+        CurrentChapter = persistent.ChapterList[ChapterNumber];
+        CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber];
 
-        dialogueBoxText.text = Dialogue.Text;
-        characterNameBoxText.text = Dialogue.Character;
-        if (Dialogue.IsQuestion()) {
+        dialogueBoxText.text = CurrentDialogue.Text;
+        characterNameBoxText.text = CurrentDialogue.Character;
+
+        if (CurrentDialogue.IsQuestion()) {
             QuestionBox.SetActive(true);
-            optionAText.text = Dialogue.Question.Options[0].Text;
-            optionBText.text = Dialogue.Question.Options[1].Text;
+            for (int x = 0; x < CurrentDialogue.Question.Options.Count; x++) {
+                GameObject OptionButton = QuestionBox.transform.GetChild(x).gameObject;
+                Text TextField = OptionButton.transform.GetChild(0).GetComponent<Text>();
+                TextField.text = CurrentDialogue.Question.Options[x].Text;
+            }
         }
         else {
             QuestionBox.SetActive(false);
         }
-        currentDialogue = dialogue;
-        currentChapter = chapter;
+
     }
 
     public void clickDialogue() {
-        Dialogue Dialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
-        if (!Dialogue.IsQuestion()) {
-            if (Dialogue.HasRedirect()) {
-                loadDialogue(Dialogue.Redirect.Chapter, Dialogue.Redirect.Dialogue);
+        if (!CurrentDialogue.IsQuestion()) {
+            if (CurrentDialogue.HasRedirect()) {
+                loadDialogue(CurrentDialogue.Redirect.Chapter, CurrentDialogue.Redirect.Dialogue);
             }
             else {
-                loadDialogue(currentChapter, ++currentDialogue);
+                loadDialogue(CurrentChapterNumber, ++CurrentDialogueNumber);
             }
         }
     }
 
-    public void clickOptionA() {
-        Dialogue Dialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
-        loadDialogue(Dialogue.Question.Options[0].Redirect.Chapter, Dialogue.Question.Options[0].Redirect.Dialogue);
-    }
-
-    public void clickOptionB() {
-        Dialogue Dialogue = persistent.ChapterList[currentChapter].Dialogues[currentDialogue];
-        loadDialogue(Dialogue.Question.Options[1].Redirect.Chapter, Dialogue.Question.Options[1].Redirect.Dialogue);
+    // Each button should have an option number assigned, starting from 0
+    public void clickOption(int number) {
+        loadDialogue(CurrentDialogue.Question.Options[number].Redirect.Chapter,
+                     CurrentDialogue.Question.Options[number].Redirect.Dialogue);
     }
 }
