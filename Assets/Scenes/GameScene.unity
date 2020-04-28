@@ -385,6 +385,9 @@ MonoBehaviour:
   TwoOptionsBox: {fileID: 935479579}
   ThreeOptionsBox: {fileID: 1152148428}
   FourOptionsBox: {fileID: 2123260529}
+  DialogueLoadingIndicator: {fileID: 813749437}
+  DialogueSkipIndicator: {fileID: 1060016036}
+  TimePerCharacter: 0.1
 --- !u!114 &311049249
 MonoBehaviour:
   m_ObjectHideFlags: 0
