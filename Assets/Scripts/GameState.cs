@@ -5,34 +5,34 @@ using UnityEngine.UI;
 using VisualNovel;
 
 public class GameState : MonoBehaviour {
-
+    //Game State Objects and Variables
     private PersistentManagerScript persistent = PersistentManagerScript.Instance;
-
-    public Text dialogueBoxText;
-    public Text characterNameBoxText;
-    public GameObject TwoOptionsBox;
-    public GameObject ThreeOptionsBox;
-    public GameObject FourOptionsBox;
-    public GameObject DialogueLoadingIndicator;
-    public GameObject DialogueSkipIndicator;
-
     private int CurrentChapterNumber = 1;
     private int CurrentDialogueNumber = 1;
     private Chapter CurrentChapter;
     private Dialogue CurrentDialogue;
-    private Dictionary<int, GameObject> optionsBoxes;
-    private Dictionary<int, GameObject> OptionsBoxes {
-        get {
-            return optionsBoxes ?? (optionsBoxes = new Dictionary<int, GameObject> {
-                    { 2, TwoOptionsBox },
-                    { 3, ThreeOptionsBox },
-                    { 4, FourOptionsBox }
-                });
-        }
-    }
 
-    // Use this for initialization
+    //UI Objects
+    private GameObject ScreenCanvas;
+    private Text CharacterNameText;
+    private Text DialogueText;
+    private Dictionary<int, GameObject> OptionBoxes;
+    private GameObject DialogueLoadingIndicator;
+    private GameObject DialogueSkipIndicator;
+
+    // Initialization
     void Start() {
+        ScreenCanvas = GameObject.Find("ScreenCanvas").gameObject;
+        CharacterNameText = ScreenCanvas.transform.Find("CharacterNameBox/Text").GetComponent<Text>();
+        DialogueText = ScreenCanvas.transform.Find("DialogueBox/Text").GetComponent<Text>();
+        OptionBoxes = new Dictionary<int, GameObject> {
+                    { 2, ScreenCanvas.transform.Find("2OptionsBox").gameObject },
+                    { 3, ScreenCanvas.transform.Find("3OptionsBox").gameObject },
+                    { 4, ScreenCanvas.transform.Find("4OptionsBox").gameObject }
+                };
+        DialogueLoadingIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Loading").gameObject;
+        DialogueSkipIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Skip").gameObject;
+
         loadDialogue(1, 1);
     }
 
@@ -70,7 +70,7 @@ public class GameState : MonoBehaviour {
         CurrentChapter = persistent.ChapterList[ChapterNumber];
         CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber];
 
-        characterNameBoxText.text = CurrentDialogue.Character;
+        CharacterNameText.text = CurrentDialogue.Character;
         WriteText(CurrentDialogue.Text);
 
     }
@@ -94,7 +94,7 @@ public class GameState : MonoBehaviour {
     public void SetOptions() {
         int NumberOfOptions = CurrentDialogue.Question.Options.Count;
         for (int x = 0; x < CurrentDialogue.Question.Options.Count; x++) {
-            GameObject OptionButton = OptionsBoxes[NumberOfOptions].transform.GetChild(x).gameObject;
+            GameObject OptionButton = OptionBoxes[NumberOfOptions].transform.GetChild(x).gameObject;
             Text TextField = OptionButton.transform.GetChild(0).GetComponent<Text>();
             TextField.text = CurrentDialogue.Question.Options[x].Text;
         }
@@ -108,15 +108,15 @@ public class GameState : MonoBehaviour {
     }
 
     private void setActiveOptionsBoxes(int NumberOfOptions = 0) {
-        foreach (KeyValuePair<int, GameObject> optionsBox in OptionsBoxes) {
+        foreach (KeyValuePair<int, GameObject> optionsBox in OptionBoxes) {
             optionsBox.Value.SetActive(false);
         }
 
-        if (!OptionsBoxes.ContainsKey(NumberOfOptions)) {
+        if (!OptionBoxes.ContainsKey(NumberOfOptions)) {
             return;
         }
         else {
-            OptionsBoxes[NumberOfOptions].SetActive(true);
+            OptionBoxes[NumberOfOptions].SetActive(true);
         }
     }
 
@@ -125,7 +125,7 @@ public class GameState : MonoBehaviour {
     private string TextToWrite = "";
     private int TextToWriteIndex = 0;
     private float WriteTimer = 0f;
-    public float TimePerCharacter = .1f;
+    public float TimePerCharacter = .04f;
 
 
     private void WriteText(string textToWrite) {
@@ -137,7 +137,7 @@ public class GameState : MonoBehaviour {
 
     private void WriteAll() {
         Writing = false;
-        dialogueBoxText.text = TextToWrite;
+        DialogueText.text = TextToWrite;
     }
 
     private void WriteUpdate() {
@@ -146,18 +146,18 @@ public class GameState : MonoBehaviour {
             WriteTimer += Time.deltaTime;
             if (WriteTimer > TimePerCharacter) {
                 int charactersToWrite = (int)(WriteTimer / TimePerCharacter);
-                WriteTimer -= (charactersToWrite*TimePerCharacter);
+                WriteTimer -= (charactersToWrite * TimePerCharacter);
                 TextToWriteIndex += charactersToWrite;
 
                 if (TextToWriteIndex >= TextToWrite.Length) {
                     Writing = false;
-                    dialogueBoxText.text = TextToWrite;
+                    DialogueText.text = TextToWrite;
                     WriteUpdate(); // Call itself to call SetWriteIndicator appropriately
                 }
                 else {
                     string formattedText = TextToWrite.Substring(0, TextToWriteIndex);
                     formattedText += "<color=#00000000>" + TextToWrite.Substring(TextToWriteIndex) + "</color>";
-                    dialogueBoxText.text = formattedText;
+                    DialogueText.text = formattedText;
                 }
             }
         }
