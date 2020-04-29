@@ -14,6 +14,7 @@ public class GameState : MonoBehaviour {
 
     //UI Objects
     private GameObject ScreenCanvas;
+    private Image BackgroundImage;
     private Text CharacterNameText;
     private Text DialogueText;
     private Dictionary<int, GameObject> OptionBoxes;
@@ -23,6 +24,7 @@ public class GameState : MonoBehaviour {
     // Initialization
     void Start() {
         ScreenCanvas = GameObject.Find("ScreenCanvas").gameObject;
+        BackgroundImage = ScreenCanvas.GetComponent<Image>();
         CharacterNameText = ScreenCanvas.transform.Find("CharacterNameBox/Text").GetComponent<Text>();
         DialogueText = ScreenCanvas.transform.Find("DialogueBox/Text").GetComponent<Text>();
         OptionBoxes = new Dictionary<int, GameObject> {
@@ -70,9 +72,30 @@ public class GameState : MonoBehaviour {
         CurrentChapter = persistent.ChapterList[ChapterNumber];
         CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber];
 
+        if (CurrentChapter.HasBackground()) {
+            loadBackground(CurrentChapter.Background);
+        }
+        if (CurrentDialogue.HasBackground()) {
+            loadBackground(CurrentDialogue.Background);
+        }
+        if (!CurrentDialogue.HasBackground() && !CurrentChapter.HasBackground()) {
+            loadBackground();
+        }
+
         CharacterNameText.text = CurrentDialogue.Character;
         WriteText(CurrentDialogue.Text);
 
+    }
+
+    public void loadBackground(string background="") {
+        if (background != "") {
+            BackgroundImage.sprite = Resources.Load<Sprite>("Backgrounds/" + background);
+            BackgroundImage.color = Color.white;
+        }
+        else {
+            BackgroundImage.color = Color.black;
+        }
+        
     }
 
     public void clickDialogue() {

@@ -21,12 +21,15 @@ public class LoadDialog : MonoBehaviour {
         List<XElement> chapters = file.Elements("Chapter").ToList();
 
         foreach (XElement chapter in chapters) {
-            Chapter Chapter = new Chapter();
             int ChapterNumber = int.Parse(chapter.Attribute("number").Value);
+            string ChapterBackground = (chapter.Attribute("background") != null) ? chapter.Attribute("background").Value : "";
+            Chapter Chapter = new Chapter(ChapterBackground);
+
             foreach (XElement dialogue in chapter.Elements("Dialogue").ToList()) {
                 int dialogueNumber = int.Parse(dialogue.Attribute("number").Value);
                 string dialogueCharacter = dialogue.Element("character").Value;
                 string dialogueText = dialogue.Element("text").Value;
+                string DialogueBackground = (dialogue.Attribute("background") != null) ? dialogue.Attribute("background").Value : "";
 
                 Redirect dialogueRedirect = null;
                 if (dialogue.Element("redirect") != null) {
@@ -45,7 +48,7 @@ public class LoadDialog : MonoBehaviour {
                     }
                 }
 
-                Dialogue Dialogue = new Dialogue(dialogueCharacter, dialogueText, dialogueRedirect, dialogueQuestion);
+                Dialogue Dialogue = new Dialogue(dialogueCharacter, dialogueText, dialogueRedirect, dialogueQuestion, DialogueBackground);
 
                 Chapter.Dialogues.Add(dialogueNumber, Dialogue);
             }

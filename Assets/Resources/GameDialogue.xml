@@ -1,5 +1,5 @@
 <Document>
-   <Chapter number="1">
+   <Chapter number="1" background="chapter1bg1">
       <Dialogue number="1">
          <character>Risky</character>
          <text>Hello and welcome to AvarumTales! This is a test dialogue meant to introduce you to the game.</text>
@@ -81,6 +81,14 @@
       <Dialogue number="1">
          <character>Gui</character>
          <text>Muahahaha</text>
+      </Dialogue>
+      <Dialogue number="2" background="chapter1bg1">
+         <character>Gui</character>
+         <text>Now with backgrounds!</text>
+      </Dialogue>
+      <Dialogue number="3">
+         <character>Gui</character>
+         <text>And not anymore...</text>
       </Dialogue>
    </Chapter>
 </Document>
