@@ -5,7 +5,7 @@
         public int Side; // 0 = Left; 1 = Center; 2 = Right
         public bool Selected;
 
-        public Character(string name, string picture, int side, bool selected = false) {
+        public Character(string name, string picture, int side, bool selected) {
             Name = name;
             Picture = picture;
             Side = side;

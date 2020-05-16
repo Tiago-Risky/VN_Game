@@ -82,7 +82,8 @@ public class GameState : MonoBehaviour {
             loadBackground();
         }
 
-        CharacterNameText.text = CurrentDialogue.Character;
+        // TODO: Character UI
+        //CharacterNameText.text = CurrentDialogue.Character;
         WriteText(CurrentDialogue.Text);
 
     }

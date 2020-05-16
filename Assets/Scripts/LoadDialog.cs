@@ -27,7 +27,6 @@ public class LoadDialog : MonoBehaviour {
 
             foreach (XElement dialogue in chapter.Elements("Dialogue").ToList()) {
                 int dialogueNumber = int.Parse(dialogue.Attribute("number").Value);
-                string dialogueCharacter = dialogue.Element("character").Value;
                 string dialogueText = dialogue.Element("text").Value;
                 string DialogueBackground = (dialogue.Attribute("background") != null) ? dialogue.Attribute("background").Value : "";
 
@@ -47,8 +46,19 @@ public class LoadDialog : MonoBehaviour {
                         dialogueQuestion.Options.Add(new Option(option.Element("option_text").Value, optionRedir));
                     }
                 }
+                List<Character> DialogueCharacters = new List<Character>();
+                if (dialogue.Element("characters") != null) {
+                    foreach (XElement character in dialogue.Element("characters").Elements("character").ToList()) {
+                        // Defaults: Name = "" ; Picture = "" ; Side = 0 (Left); Selected = true
+                        string CharacterName = (character.Attribute("name") != null) ? character.Attribute("name").Value : "";
+                        string CharacterPicture = (character.Attribute("picture") != null) ? character.Attribute("picture").Value : "";
+                        int CharacterSide = (character.Attribute("side") != null) ? int.Parse(character.Attribute("side").Value) : 0;
+                        bool CharacterSelected = (character.Attribute("selected") != null) ? bool.Parse(character.Attribute("selected").Value) : true;
+                        DialogueCharacters.Add(new Character(CharacterName,CharacterPicture,CharacterSide,CharacterSelected));
+                    }
+                }
 
-                Dialogue Dialogue = new Dialogue(dialogueCharacter, dialogueText, dialogueRedirect, dialogueQuestion, DialogueBackground);
+                Dialogue Dialogue = new Dialogue(DialogueCharacters, dialogueText, dialogueRedirect, dialogueQuestion, DialogueBackground);
 
                 Chapter.Dialogues.Add(dialogueNumber, Dialogue);
             }

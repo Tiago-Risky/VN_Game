@@ -1,15 +1,18 @@
 <Document>
    <Chapter number="1" background="chapter1bg1">
       <Dialogue number="1">
-         <character>Risky</character>
-         <text>Hello and welcome to AvarumTales! This is a test dialogue meant to introduce you to the game.</text>
+         <text>Hello and welcome to VN_Game! This is a test dialogue meant to introduce you to the game.</text>
       </Dialogue>
       <Dialogue number="2">
-         <character>Risky</character>
-         <text>This is the dialogue number 2 and I'm going to ask you a question after.</text>
+         <characters>
+            <character name="Risky"></character>
+         </characters>
+         <text>This is the dialogue number 2, the character should now be Risky, and I'm going to ask you a question after.</text>
       </Dialogue>
       <Dialogue number="3">
-         <character>Risky</character>
+         <characters>
+            <character name="Risky"></character>
+         </characters>
          <text>What are you going to choose?</text>
          <options>
             <option>
@@ -23,21 +26,29 @@
          </options>
       </Dialogue>
       <Dialogue number="4">
-         <character>Risky</character>
+         <characters>
+            <character name="Risky"></character>
+         </characters>
          <text>This is Chapter 1 Dialogue 4 and should appear for Option A</text>
          <redirect chapter="1" dialogue="6"></redirect>
       </Dialogue>
       <Dialogue number="5">
-         <character>Risky</character>
+         <characters>
+            <character name="Risky"></character>
+         </characters>
          <text>This is Chapter 1 Dialogue 5 and should appear for Option B</text>
          <redirect chapter="-1" dialogue="-1"></redirect>
       </Dialogue>
       <Dialogue number="6">
-         <character>Risky</character>
+         <characters>
+            <character name="Risky"></character>
+         </characters>
          <text>This is C1/D6 and should appear after C1/D4</text>
       </Dialogue>
       <Dialogue number="7">
-         <character>Risky</character>
+         <characters>
+            <character name="Risky"></character>
+         </characters>
          <text>Now this question has 3 options instead</text>
          <options>
             <option>
@@ -55,7 +66,9 @@
          </options>
       </Dialogue>
       <Dialogue number="8">
-         <character>Risky</character>
+         <characters>
+            <character name="Risky"></character>
+         </characters>
          <text>Now this question has 4 options instead, and should appear after selecting option A on C1/D7</text>
          <options>
             <option>
@@ -79,15 +92,21 @@
    </Chapter>
    <Chapter number="2">
       <Dialogue number="1">
-         <character>Gui</character>
+         <characters>
+            <character name="Gui"></character>
+         </characters>
          <text>Muahahaha</text>
       </Dialogue>
       <Dialogue number="2" background="chapter1bg1">
-         <character>Gui</character>
+         <characters>
+            <character name="Gui"></character>
+         </characters>
          <text>Now with backgrounds!</text>
       </Dialogue>
       <Dialogue number="3">
-         <character>Gui</character>
+         <characters>
+            <character name="Gui"></character>
+         </characters>
          <text>And not anymore...</text>
       </Dialogue>
    </Chapter>
