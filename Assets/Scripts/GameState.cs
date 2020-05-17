@@ -20,7 +20,8 @@ public class GameState : MonoBehaviour {
     private GameObject DialogueLoadingIndicator;
     private GameObject DialogueSkipIndicator;
     private List<GameObject> CharacterCanvas;
-    private List<Text> CharacterNames;
+    private List<Text> CharacterNameText;
+    private List<Image> CharacterNameBackground;
     private List<Image> CharacterImages;
 
     // Initialization
@@ -32,15 +33,20 @@ public class GameState : MonoBehaviour {
             ScreenCanvas.transform.Find("Character1").gameObject,
             ScreenCanvas.transform.Find("Character2").gameObject
         };
-        CharacterNames = new List<Text> {
-            ScreenCanvas.transform.Find("Character0/Name/Text").GetComponent<Text>(),
-            ScreenCanvas.transform.Find("Character1/Name/Text").GetComponent<Text>(),
-            ScreenCanvas.transform.Find("Character2/Name/Text").GetComponent<Text>()
+        CharacterNameText = new List<Text> {
+            CharacterCanvas[0].transform.Find("Name/Text").GetComponent<Text>(),
+            CharacterCanvas[1].transform.Find("Name/Text").GetComponent<Text>(),
+            CharacterCanvas[2].transform.Find("Name/Text").GetComponent<Text>()
+        };
+        CharacterNameBackground = new List<Image> {
+            CharacterCanvas[0].transform.Find("Name").GetComponent<Image>(),
+            CharacterCanvas[1].transform.Find("Name").GetComponent<Image>(),
+            CharacterCanvas[2].transform.Find("Name").GetComponent<Image>()
         };
         CharacterImages = new List<Image> {
-            ScreenCanvas.transform.Find("Character0/Image").GetComponent<Image>(),
-            ScreenCanvas.transform.Find("Character1/Image").GetComponent<Image>(),
-            ScreenCanvas.transform.Find("Character2/Image").GetComponent<Image>()
+            CharacterCanvas[0].transform.Find("Image").GetComponent<Image>(),
+            CharacterCanvas[1].transform.Find("Image").GetComponent<Image>(),
+            CharacterCanvas[2].transform.Find("Image").GetComponent<Image>()
         };
         DialogueText = ScreenCanvas.transform.Find("DialogueBox/Text").GetComponent<Text>();
         OptionBoxes = new Dictionary<int, GameObject> {
@@ -122,21 +128,40 @@ public class GameState : MonoBehaviour {
             characterCanvas.SetActive(false);
         }
         foreach (Character character in characters) {
+            int Side = character.Side;
             CharacterCanvas[character.Side].SetActive(true);
             if (character.Name.Length > 0) {
-                CharacterNames[character.Side].gameObject.SetActive(true);
-                CharacterNames[character.Side].text = character.Name;
+                CharacterNameText[Side].gameObject.SetActive(true);
+                CharacterNameText[Side].text = character.Name;
             }
             else {
-                CharacterNames[character.Side].gameObject.SetActive(false);
+                CharacterNameText[Side].gameObject.SetActive(false);
             }
 
             if (character.HasPicture()) {
-                CharacterImages[character.Side].gameObject.SetActive(true);
-                CharacterImages[character.Side].sprite = Resources.Load<Sprite>("Characters/" + character.Picture);
+                CharacterImages[Side].gameObject.SetActive(true);
+                CharacterImages[Side].sprite = Resources.Load<Sprite>("Characters/" + character.Picture);
             }
             else {
-                CharacterImages[character.Side].gameObject.SetActive(false);
+                CharacterImages[Side].gameObject.SetActive(false);
+            }
+            switch (character.GetVisibility()) {
+                case 0:
+                    CharacterImages[Side].color = new Color32(255,255,255,200);
+                    CharacterNameBackground[Side].color = new Color32(154, 154, 154, 140);
+                    break;
+                case 1:
+                    CharacterImages[Side].color = new Color32(255, 255, 255, 255);
+                    CharacterNameBackground[Side].color = new Color32(240, 240, 240, 200);
+                    break;
+                case 10:
+                    CharacterImages[Side].color = new Color32(0, 0, 0, 200);
+                    CharacterNameBackground[Side].color = new Color32(154, 154, 154, 140);
+                    break;
+                case 11:
+                    CharacterImages[Side].color = new Color32(0, 0, 0, 255);
+                    CharacterNameBackground[Side].color = new Color32(240, 240, 240, 200);
+                    break;
             }
         }
     }

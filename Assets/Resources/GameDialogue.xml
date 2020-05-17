@@ -5,15 +5,15 @@
       </Dialogue>
       <Dialogue number="2">
          <characters>
-            <character name="Risky"></character>
-            <character name="Gui" side="2"></character>
-            <character name="Another Guy" side="1"></character>
+            <character name="Risky" picture="character1-cut"></character>
+            <character name="Gui" side="2" picture="character2-cut" selected="false"></character>
+            <character name="Another Guy" side="1" picture="character3-cut" selected="false" hidden="true"></character>
          </characters>
          <text>This is the dialogue number 2, the character should now be Risky, and I'm going to ask you a question after.</text>
       </Dialogue>
       <Dialogue number="3">
          <characters>
-            <character name="Risky"></character>
+            <character name="Risky" picture="character1-cut"></character>
          </characters>
          <text>What are you going to choose?</text>
          <options>
@@ -29,7 +29,7 @@
       </Dialogue>
       <Dialogue number="4">
          <characters>
-            <character name="Risky"></character>
+            <character name="Another Guy" side="1" picture="character3-cut" hidden="true"></character>
          </characters>
          <text>This is Chapter 1 Dialogue 4 and should appear for Option A</text>
          <redirect chapter="1" dialogue="6"></redirect>
