@@ -15,17 +15,33 @@ public class GameState : MonoBehaviour {
     //UI Objects
     private GameObject ScreenCanvas;
     private Image BackgroundImage;
-    private Text CharacterNameText;
     private Text DialogueText;
     private Dictionary<int, GameObject> OptionBoxes;
     private GameObject DialogueLoadingIndicator;
     private GameObject DialogueSkipIndicator;
+    private List<GameObject> CharacterCanvas;
+    private List<Text> CharacterNames;
+    private List<Image> CharacterImages;
 
     // Initialization
     void Start() {
         ScreenCanvas = GameObject.Find("ScreenCanvas").gameObject;
         BackgroundImage = ScreenCanvas.GetComponent<Image>();
-        CharacterNameText = ScreenCanvas.transform.Find("CharacterNameBox/Text").GetComponent<Text>();
+        CharacterCanvas = new List<GameObject> {
+            ScreenCanvas.transform.Find("Character0").gameObject,
+            ScreenCanvas.transform.Find("Character1").gameObject,
+            ScreenCanvas.transform.Find("Character2").gameObject
+        };
+        CharacterNames = new List<Text> {
+            ScreenCanvas.transform.Find("Character0/Name/Text").GetComponent<Text>(),
+            ScreenCanvas.transform.Find("Character1/Name/Text").GetComponent<Text>(),
+            ScreenCanvas.transform.Find("Character2/Name/Text").GetComponent<Text>()
+        };
+        CharacterImages = new List<Image> {
+            ScreenCanvas.transform.Find("Character0/Image").GetComponent<Image>(),
+            ScreenCanvas.transform.Find("Character1/Image").GetComponent<Image>(),
+            ScreenCanvas.transform.Find("Character2/Image").GetComponent<Image>()
+        };
         DialogueText = ScreenCanvas.transform.Find("DialogueBox/Text").GetComponent<Text>();
         OptionBoxes = new Dictionary<int, GameObject> {
                     { 2, ScreenCanvas.transform.Find("2OptionsBox").gameObject },
@@ -82,8 +98,8 @@ public class GameState : MonoBehaviour {
             loadBackground();
         }
 
-        // TODO: Character UI
-        //CharacterNameText.text = CurrentDialogue.Character;
+        loadCharacters(CurrentDialogue.Characters);
+
         WriteText(CurrentDialogue.Text);
 
     }
@@ -97,6 +113,32 @@ public class GameState : MonoBehaviour {
             BackgroundImage.color = Color.black;
         }
         
+    }
+
+
+
+    public void loadCharacters(List<Character> characters) {
+        foreach(GameObject characterCanvas in CharacterCanvas) {
+            characterCanvas.SetActive(false);
+        }
+        foreach (Character character in characters) {
+            CharacterCanvas[character.Side].SetActive(true);
+            if (character.Name.Length > 0) {
+                CharacterNames[character.Side].gameObject.SetActive(true);
+                CharacterNames[character.Side].text = character.Name;
+            }
+            else {
+                CharacterNames[character.Side].gameObject.SetActive(false);
+            }
+
+            if (character.HasPicture()) {
+                CharacterImages[character.Side].gameObject.SetActive(true);
+                CharacterImages[character.Side].sprite = Resources.Load<Sprite>("Characters/" + character.Picture);
+            }
+            else {
+                CharacterImages[character.Side].gameObject.SetActive(false);
+            }
+        }
     }
 
     public void clickDialogue() {

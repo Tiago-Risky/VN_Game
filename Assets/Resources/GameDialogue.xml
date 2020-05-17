@@ -6,6 +6,8 @@
       <Dialogue number="2">
          <characters>
             <character name="Risky"></character>
+            <character name="Gui" side="2"></character>
+            <character name="Another Guy" side="1"></character>
          </characters>
          <text>This is the dialogue number 2, the character should now be Risky, and I'm going to ask you a question after.</text>
       </Dialogue>
