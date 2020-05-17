@@ -49,12 +49,13 @@ public class LoadDialog : MonoBehaviour {
                 List<Character> DialogueCharacters = new List<Character>();
                 if (dialogue.Element("characters") != null) {
                     foreach (XElement character in dialogue.Element("characters").Elements("character").ToList()) {
-                        // Defaults: Name = "" ; Picture = "" ; Side = 0 (Left); Selected = true
+                        // Defaults: Name = "" ; Picture = "" ; Side = 0 (Left); Selected = true; Hidden = false
                         string CharacterName = (character.Attribute("name") != null) ? character.Attribute("name").Value : "";
                         string CharacterPicture = (character.Attribute("picture") != null) ? character.Attribute("picture").Value : "";
                         int CharacterSide = (character.Attribute("side") != null) ? int.Parse(character.Attribute("side").Value) : 0;
                         bool CharacterSelected = (character.Attribute("selected") != null) ? bool.Parse(character.Attribute("selected").Value) : true;
-                        DialogueCharacters.Add(new Character(CharacterName,CharacterPicture,CharacterSide,CharacterSelected));
+                        bool CharacterHidden = (character.Attribute("hidden") != null) ? bool.Parse(character.Attribute("hidden").Value) : false;
+                        DialogueCharacters.Add(new Character(CharacterName,CharacterPicture,CharacterSide,CharacterSelected,CharacterHidden));
                     }
                 }
 
