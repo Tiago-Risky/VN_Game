@@ -1,4 +1,6 @@
-﻿namespace VisualNovel {
+﻿using System.Xml.Linq;
+
+namespace VisualNovel {
     public class Character {
         public string Name = "";
         public string Picture = "";
@@ -30,6 +32,17 @@
             Visibility += Hidden ? 10 : 0;
 
             return Visibility;
+        }
+
+        // For the dialogue editor
+        public XElement ExportXML() {
+            return new XElement("Character",
+                            new XAttribute("Name", Name),
+                            new XAttribute("Picture", Picture),
+                            new XAttribute("Side", Side),
+                            new XAttribute("Selected", Selected),
+                            new XAttribute("Hidden", Hidden)
+                            );
         }
     }
 }

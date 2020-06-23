@@ -78,7 +78,7 @@ public class GameState : MonoBehaviour {
         }
 
         // If this was the last dialogue in the chapter, move to next chapter
-        if (persistent.ChapterList[ChapterNumber].Dialogues.Count < DialogueNumber) {
+        if (persistent.ChapterList[ChapterNumber-1].Dialogues.Count < DialogueNumber) {
             ChapterNumber++;
             DialogueNumber = 1;
         }
@@ -91,8 +91,8 @@ public class GameState : MonoBehaviour {
 
         CurrentChapterNumber = ChapterNumber;
         CurrentDialogueNumber = DialogueNumber;
-        CurrentChapter = persistent.ChapterList[ChapterNumber];
-        CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber];
+        CurrentChapter = persistent.ChapterList[ChapterNumber-1];
+        CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber-1];
 
         if (CurrentChapter.HasBackground()) {
             loadBackground(CurrentChapter.Background);
@@ -183,19 +183,19 @@ public class GameState : MonoBehaviour {
     }
 
     public void SetOptions() {
-        int NumberOfOptions = CurrentDialogue.Question.Options.Count;
-        for (int x = 0; x < CurrentDialogue.Question.Options.Count; x++) {
+        int NumberOfOptions = CurrentDialogue.Options.Count;
+        for (int x = 0; x < CurrentDialogue.Options.Count; x++) {
             GameObject OptionButton = OptionBoxes[NumberOfOptions].transform.GetChild(x).gameObject;
             Text TextField = OptionButton.transform.GetChild(0).GetComponent<Text>();
-            TextField.text = CurrentDialogue.Question.Options[x].Text;
+            TextField.text = CurrentDialogue.Options[x].Text;
         }
         setActiveOptionsBoxes(NumberOfOptions);
     }
 
     // Each button should have an option number assigned, starting from 0
     public void clickOption(int number) {
-        loadDialogue(CurrentDialogue.Question.Options[number].Redirect.Chapter,
-                     CurrentDialogue.Question.Options[number].Redirect.Dialogue);
+        loadDialogue(CurrentDialogue.Options[number].Redirect.Chapter,
+                     CurrentDialogue.Options[number].Redirect.Dialogue);
     }
 
     private void setActiveOptionsBoxes(int NumberOfOptions = 0) {
