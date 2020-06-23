@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace VisualNovel {
@@ -13,6 +14,16 @@ namespace VisualNovel {
         public Chapter(int number, string background) {
             Number = number;
             Background = background;
+        }
+
+        public Chapter(XElement xElement) {
+            Number = int.Parse(xElement.Attribute("Number").Value);
+            Background = (xElement.Attribute("Background") != null) ? xElement.Attribute("Background").Value : "";
+            if (xElement.Elements("Dialogue") != null) {
+                foreach (XElement dialogue in xElement.Elements("Dialogue").ToList()) {
+                    Dialogues.Add(new Dialogue(dialogue));
+                }
+            }
         }
         public bool HasBackground() {
             return Background.Length > 0;

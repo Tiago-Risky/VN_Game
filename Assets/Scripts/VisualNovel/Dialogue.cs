@@ -1,50 +1,71 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace VisualNovel {
     public class Dialogue {
         public int Number;
-        public List<Character> Characters;
+        public string Background;
         public string Text;
         public Redirect Redirect;
+        public List<Character> Characters;
         public List<Option> Options;
-        public string Background;
 
-        public Dialogue(int number, List<Character> characters, string text, Redirect redirect, List<Option> options, string background) {
+        public Dialogue(int number, string text, string background, Redirect redirect, List<Character> characters, List<Option> options) {
             Number = number;
-            Characters = characters;
             Text = text;
-            Redirect = redirect;
-            Options = options;
             Background = background;
+            Redirect = redirect;
+            Characters = characters;
+            Options = options;
         }
 
-        public bool IsQuestion() {
-            return Options != null;
-        }
-
-        public bool HasRedirect() {
-            return Redirect != null;
+        public Dialogue(XElement xElement) {
+            Number = int.Parse(xElement.Attribute("Number").Value);
+            Text = xElement.Element("Text").Value;
+            Background = (xElement.Attribute("Background") != null) ? xElement.Attribute("Background").Value : "";
+            Redirect = (xElement.Element("Redirect") != null) ? new Redirect(xElement.Element("Redirect")) : null;
+            Characters = new List<Character>();
+            if (xElement.Element("Characters") != null) {
+                foreach (XElement character in xElement.Element("Characters").Elements("Character").ToList()) {
+                    Characters.Add(new Character(character));
+                }
+            }
+            
+            if (xElement.Element("Options") != null) {
+                Options = new List<Option>();
+                foreach (XElement option in xElement.Element("Options").Elements("Option").ToList()) {
+                    Options.Add(new Option(option));
+                }
+            }
         }
 
         public bool HasBackground() {
             return Background.Length > 0;
         }
 
+        public bool HasRedirect() {
+            return Redirect != null;
+        }
+
         public bool HasCharacters() {
-            return Characters.Count > 0;
+            return (Characters!=null && Characters.Count > 0);
+        }
+
+        public bool IsQuestion() {
+            return Options != null;
         }
 
         // For the dialogue editor
         public XElement ExportXML() {
             XElement xElement = new XElement("Dialogue", new XAttribute("Number", Number), new XElement("Text", Text));
 
-            if (HasRedirect()) {
-                xElement.Add(Redirect.ExportXML());
-            }
-
             if (HasBackground()) {
                 xElement.Add(new XAttribute("Background", Background));
+            }
+
+            if (HasRedirect()) {
+                xElement.Add(Redirect.ExportXML());
             }
 
             if (HasCharacters()) {

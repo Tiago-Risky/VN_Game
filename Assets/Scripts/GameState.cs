@@ -78,7 +78,7 @@ public class GameState : MonoBehaviour {
         }
 
         // If this was the last dialogue in the chapter, move to next chapter
-        if (persistent.ChapterList[ChapterNumber-1].Dialogues.Count < DialogueNumber) {
+        if (persistent.ChapterList[ChapterNumber - 1].Dialogues.Count < DialogueNumber) {
             ChapterNumber++;
             DialogueNumber = 1;
         }
@@ -91,8 +91,8 @@ public class GameState : MonoBehaviour {
 
         CurrentChapterNumber = ChapterNumber;
         CurrentDialogueNumber = DialogueNumber;
-        CurrentChapter = persistent.ChapterList[ChapterNumber-1];
-        CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber-1];
+        CurrentChapter = persistent.ChapterList[ChapterNumber - 1];
+        CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber - 1];
 
         if (CurrentChapter.HasBackground()) {
             loadBackground(CurrentChapter.Background);

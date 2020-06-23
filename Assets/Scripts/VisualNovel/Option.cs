@@ -10,6 +10,11 @@ namespace VisualNovel {
             Redirect = redirect;
         }
 
+        public Option(XElement xElement) {
+            Text = xElement.Attribute("Text").Value;
+            Redirect = new Redirect(xElement.Element("Redirect"));
+        }
+
         // For the dialogue editor
         public XElement ExportXML() {
             return new XElement("Option", new XAttribute("Text", Text), Redirect.ExportXML());

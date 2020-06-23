@@ -10,6 +10,11 @@ namespace VisualNovel {
             Dialogue = dialogue;
         }
 
+        public Redirect(XElement xElement) {
+            Chapter = int.Parse(xElement.Attribute("Chapter").Value);
+            Dialogue = int.Parse(xElement.Attribute("Dialogue").Value);
+        }
+
         // For the dialogue editor
         public XElement ExportXML() {
             return new XElement("Redirect", new XAttribute("Chapter", Chapter), new XAttribute("Dialogue", Dialogue));

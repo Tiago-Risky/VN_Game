@@ -16,6 +16,15 @@ namespace VisualNovel {
             Hidden = hidden;
         }
 
+        // Defaults: Name = "" ; Picture = "" ; Side = 0 (Left); Selected = true; Hidden = false
+        public Character(XElement xElement) {
+            Name = (xElement.Attribute("Name") != null) ? xElement.Attribute("Name").Value : "";
+            Picture = (xElement.Attribute("Picture") != null) ? xElement.Attribute("Picture").Value : "";
+            Side = (xElement.Attribute("Side") != null) ? int.Parse(xElement.Attribute("Side").Value) : 0;
+            Selected = (xElement.Attribute("Selected") != null) ? bool.Parse(xElement.Attribute("Selected").Value) : true;
+            Hidden = (xElement.Attribute("Hidden") != null) ? bool.Parse(xElement.Attribute("Hidden").Value) : false;
+        }
+
         public bool HasPicture() {
             return Picture.Length > 0;
         }
