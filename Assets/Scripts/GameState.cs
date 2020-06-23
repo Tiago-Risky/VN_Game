@@ -110,7 +110,7 @@ public class GameState : MonoBehaviour {
 
     }
 
-    public void loadBackground(string background="") {
+    public void loadBackground(string background = "") {
         if (background != "") {
             BackgroundImage.sprite = Resources.Load<Sprite>("Backgrounds/" + background);
             BackgroundImage.color = Color.white;
@@ -118,13 +118,13 @@ public class GameState : MonoBehaviour {
         else {
             BackgroundImage.color = Color.black;
         }
-        
+
     }
 
 
 
     public void loadCharacters(List<Character> characters) {
-        foreach(GameObject characterCanvas in CharacterCanvas) {
+        foreach (GameObject characterCanvas in CharacterCanvas) {
             characterCanvas.SetActive(false);
         }
         foreach (Character character in characters) {
@@ -147,7 +147,7 @@ public class GameState : MonoBehaviour {
             }
             switch (character.GetVisibility()) {
                 case 0:
-                    CharacterImages[Side].color = new Color32(255,255,255,200);
+                    CharacterImages[Side].color = new Color32(255, 255, 255, 200);
                     CharacterNameBackground[Side].color = new Color32(154, 154, 154, 140);
                     break;
                 case 1:

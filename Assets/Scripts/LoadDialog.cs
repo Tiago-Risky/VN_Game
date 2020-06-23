@@ -55,7 +55,7 @@ public class LoadDialog : MonoBehaviour {
                         int CharacterSide = (character.Attribute("side") != null) ? int.Parse(character.Attribute("side").Value) : 0;
                         bool CharacterSelected = (character.Attribute("selected") != null) ? bool.Parse(character.Attribute("selected").Value) : true;
                         bool CharacterHidden = (character.Attribute("hidden") != null) ? bool.Parse(character.Attribute("hidden").Value) : false;
-                        DialogueCharacters.Add(new Character(CharacterName,CharacterPicture,CharacterSide,CharacterSelected,CharacterHidden));
+                        DialogueCharacters.Add(new Character(CharacterName, CharacterPicture, CharacterSide, CharacterSelected, CharacterHidden));
                     }
                 }
 
