@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VisualNovel;
 
-public class LoadDialog : MonoBehaviour {
+public class LoadScript : MonoBehaviour {
 
     public TextAsset XMLFile;
     public Text StatusTextbox;
