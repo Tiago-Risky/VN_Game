@@ -47,19 +47,18 @@ namespace VisualNovel {
         }
 
         public bool TestExpression(string expression) {
-            string symbol = Regex.Match(expression, "(=|>|<|>=|<=|<>|!=)").ToString();
             string[] splitExpression = Regex.Split(expression, "(=|>|<|>=|<=|<>|!=)");
             List<int> Numbers = new List<int>();
             if (int.TryParse(splitExpression[0], out int result)) {
                 Numbers.Add(result);
-                Numbers.Add(persistent.PointsList[splitExpression[1]].Value);
+                Numbers.Add(persistent.PointsList[splitExpression[2]].Value);
             }
             else {
                 Numbers.Add(persistent.PointsList[splitExpression[0]].Value);
-                Numbers.Add(int.Parse(splitExpression[1]));
+                Numbers.Add(int.Parse(splitExpression[2]));
             }
 
-            switch (symbol) {
+            switch (splitExpression[1]) {
                 case "=":
                     if (Numbers[0] == Numbers[1])
                         return true;
