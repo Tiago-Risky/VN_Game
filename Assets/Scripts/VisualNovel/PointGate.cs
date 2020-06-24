@@ -47,7 +47,7 @@ namespace VisualNovel {
         }
 
         public bool TestExpression(string expression) {
-            string[] splitExpression = Regex.Split(expression, "(=|>|<|>=|<=|<>|!=)");
+            string[] splitExpression = Regex.Split(expression, "(>=|<=|<>|!=|=|>|<)");
             List<int> Numbers = new List<int>();
             if (int.TryParse(splitExpression[0], out int result)) {
                 Numbers.Add(result);
