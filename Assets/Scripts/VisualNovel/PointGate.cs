@@ -43,14 +43,16 @@ namespace VisualNovel {
             switch (Type.ToLower()) {
                 case "and":
                     foreach (string Expression in Expressions) {
-                        if (!TestExpression(Expression))
+                        if (!TestExpression(Expression)) {
                             return false;
+                        }
                     }
                     return true;
                 case "or":
                     foreach (string Expression in Expressions) {
-                        if (TestExpression(Expression))
+                        if (TestExpression(Expression)) {
                             return true;
+                        }
                     }
                     return false;
                 default:
@@ -74,36 +76,18 @@ namespace VisualNovel {
 
             switch (splitExpression[1]) {
                 case "=":
-                    if (Numbers[0] == Numbers[1])
-                        return true;
-                    else
-                        return false;
+                    return Numbers[0] == Numbers[1];
                 case "<":
-                    if (Numbers[0] < Numbers[1])
-                        return true;
-                    else
-                        return false;
+                    return Numbers[0] < Numbers[1];
                 case ">":
-                    if (Numbers[0] > Numbers[1])
-                        return true;
-                    else
-                        return false;
+                    return Numbers[0] > Numbers[1];
                 case ">=":
-                    if (Numbers[0] >= Numbers[1])
-                        return true;
-                    else
-                        return false;
+                    return Numbers[0] >= Numbers[1];
                 case "<=":
-                    if (Numbers[0] <= Numbers[1])
-                        return true;
-                    else
-                        return false;
+                    return Numbers[0] <= Numbers[1];
                 case "<>":
                 case "!=":
-                    if (Numbers[0] != Numbers[1])
-                        return true;
-                    else
-                        return false;
+                    return Numbers[0] != Numbers[1];
                 default:
                     Debug.Log("This expression has an invalid operator:" + expression);
                     break;

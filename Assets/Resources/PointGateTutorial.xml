@@ -1,21 +1,22 @@
 <PointGate>
-    <Redirect Chapter="1" Dialogue="1"></Redirect> <!-- optional default redirect if every condition fails to match -->
+    <Redirect Chapter="1" Dialogue="1" /> <!-- optional default redirect if every condition fails to match -->
     
     <!-- In this condition if metalbenders>50 && nobles>50 you get redirected to 2/15-->
     <Condition Type="AND">
-        <Redirect Chapter="2" Dialogue="15"></Redirect>
+        <Redirect Chapter="2" Dialogue="15" />
         <Expression>metalbenders>50</Expression>
         <Expression>nobles>50</Expression>
     </Condition>
 
     <!-- In this condition if either metalbenders=50 OR nobles<=50 you get redirected to 3/10-->
     <Condition Type="or">
-        <Redirect Chapter="3" Dialogue="10"></Redirect>
+        <Redirect Chapter="3" Dialogue="10" />
         <Expression>metalbenders=50</Expression>
         <Expression>50>=nobles</Expression>
     </Condition>
 
     <!-- Condition Type is either AND (every expression must be true) or OR (at least one expression must be true -->
+    <!-- Condition Type is not case-sensitive, you can write AND, And, and,... -->
     <!-- Available expression comparison symbols
         >= (Greater than or equal)
         <= (Less than or equal)
