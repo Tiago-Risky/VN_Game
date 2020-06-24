@@ -4,25 +4,39 @@ using UnityEngine;
 
 namespace VisualNovel {
     public class PointGate {
-        //TODO
-        public PointGate(List<(Condition, Redirect)> conditions, Redirect defaultRedirect) {
-            //TODO
+        public List<Condition> Conditions;
+        public Redirect DefaultRedirect;
+
+        public PointGate(List<Condition> conditions, Redirect defaultRedirect) {
+            Conditions = conditions;
+            DefaultRedirect = defaultRedirect;
         }
 
         public Redirect SolveGate() {
-            //TODO
-            return new Redirect(-1, -1);
+            foreach (Condition condition in Conditions) {
+                if (condition.Pass()) {
+                    return condition.Redirect;
+                }
+            }
+            if (DefaultRedirect != null) {
+                return DefaultRedirect;
+            }
+            else {
+                return null;
+            }
         }
     }
 
     public class Condition {
         private PersistentManagerScript persistent = PersistentManagerScript.Instance;
-        List<string> Expressions;
-        string Type;
+        public List<string> Expressions;
+        public string Type;
+        public Redirect Redirect;
 
-        public Condition(List<string> expressions, string type) {
+        public Condition(List<string> expressions, string type, Redirect redirect) {
             Expressions = expressions;
             Type = type;
+            Redirect = redirect;
         }
 
         public bool Pass() {
