@@ -104,7 +104,6 @@ public class GameState : MonoBehaviour {
         else {
             BackgroundImage.color = Color.black;
         }
-
     }
 
     public void LoadCharacters(List<Character> characters) {
@@ -153,7 +152,13 @@ public class GameState : MonoBehaviour {
     public void ClickDialogue() {
         if (!Writing) {
             if (!CurrentDialogue.IsQuestion()) {
-                LoadDialogue(CurrentDialogue.Redirect.Chapter, CurrentDialogue.Redirect.Dialogue);
+                if (CurrentDialogue.HasPointGate()) {
+                    Redirect PointGateResult = CurrentDialogue.PointGate.SolveGate();
+                    LoadDialogue(PointGateResult.Chapter, PointGateResult.Dialogue);
+                }
+                else {
+                    LoadDialogue(CurrentDialogue.Redirect.Chapter, CurrentDialogue.Redirect.Dialogue);
+                }
             }
         }
         else {
@@ -173,8 +178,14 @@ public class GameState : MonoBehaviour {
 
     // Each button should have an option number assigned, starting from 0
     public void ClickOption(int number) {
-        LoadDialogue(CurrentDialogue.Options[number].Redirect.Chapter,
-                     CurrentDialogue.Options[number].Redirect.Dialogue);
+        if (CurrentDialogue.Options[number].HasPointGate()) {
+            Redirect PointGateResult = CurrentDialogue.Options[number].PointGate.SolveGate();
+            LoadDialogue(PointGateResult.Chapter, PointGateResult.Dialogue);
+        }
+        else {
+            LoadDialogue(CurrentDialogue.Options[number].Redirect.Chapter,
+                         CurrentDialogue.Options[number].Redirect.Dialogue);
+        }
     }
 
     private void SetActiveOptionsBoxes(int NumberOfOptions = 0) {

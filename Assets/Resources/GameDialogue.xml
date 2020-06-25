@@ -103,10 +103,54 @@
     </Dialogue>
     <Dialogue Number="3">
       <Text>And not anymore...</Text>
-      <Redirect Chapter="-1" Dialogue="-1" />
+      <Redirect Chapter="3" Dialogue="1" />
       <Characters>
         <Character Name="Gui" Picture="" Side="0" Selected="true" Hidden="false" />
       </Characters>
+    </Dialogue>
+  </Chapter>
+  <Chapter Number="3">
+    <Dialogue Number="1">
+      <Text>This is Chapter3 Dialogue1. Let's check the new PointGates</Text>
+      <Redirect Chapter="3" Dialogue="2" />
+    </Dialogue>
+    <Dialogue Number="2">
+      <Text>This is Chapter3 Dialogue2. This PointGate will redirect to C3D4 if your "gamer" points are above 40. Else it will send you to C3D3.</Text>
+      <PointGate>
+        <Redirect Chapter="3" Dialogue="3" />
+        <Condition Type="AND">
+            <Redirect Chapter="3" Dialogue="4" />
+            <Expression>gamer>40</Expression>
+        </Condition>
+      </PointGate>
+    </Dialogue>
+    <Dialogue Number="3">
+      <Text>This is Chapter3 Dialogue3. Your gamer points are 40 or less.</Text>
+      <Redirect Chapter="3" Dialogue="6" />
+    </Dialogue>
+    <Dialogue Number="4">
+      <Text>This is Chapter3 Dialogue4. You have more than 40 gamer points.</Text>
+      <Redirect Chapter="3" Dialogue="5" />
+    </Dialogue>
+    <Dialogue Number="5">
+      <Text>This is Chapter3 Dialogue5. Your gamer points will be reduced and we're sending you back to C3D2.</Text>
+      <!-- TODO -->
+      <Redirect Chapter="3" Dialogue="2" />
+    </Dialogue>
+    <Dialogue Number="6">
+      <Text>This is Chapter3 Dialogue6. Your gamer points will be increased.</Text>
+      <!-- TODO -->
+      <Redirect Chapter="3" Dialogue="7" />
+    </Dialogue>
+    <Dialogue Number="7">
+      <Text>This is Chapter3 Dialogue7. If everything turned out right this PointGate will send you to the end! Else, you'll be sent back to the beginning to fix yourself up.</Text>
+      <PointGate>
+        <Redirect Chapter="3" Dialogue="1" />
+        <Condition Type="AND">
+            <Redirect Chapter="-1" Dialogue="-1" />
+            <Expression>gamer=60</Expression>
+        </Condition>
+      </PointGate>
     </Dialogue>
   </Chapter>
 </Document>
