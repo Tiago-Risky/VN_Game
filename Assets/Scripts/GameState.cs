@@ -68,46 +68,36 @@ public class GameState : MonoBehaviour {
     private void loadDialogue(int ChapterNumber, int DialogueNumber) {
         Debug.Log("loadDialogue called with " + ChapterNumber + " and " + DialogueNumber);
 
-        // Making sure the OptionsBoxes are all disabled at the beginning of a new dialogue
-        setActiveOptionsBoxes();
-
         // Calling -1 for chapter and dialogue moves to EndScene
         if (ChapterNumber == -1 && DialogueNumber == -1) {
             SceneManager.LoadScene(sceneName: "EndScene");
             return;
         }
 
-        // If this was the last dialogue in the chapter, move to next chapter
-        if (persistent.ChapterList[ChapterNumber - 1].Dialogues.Count < DialogueNumber) {
-            ChapterNumber++;
-            DialogueNumber = 1;
-        }
-
-        // If this was the last chapter, move to EndScene
-        if (persistent.ChapterList.Count < ChapterNumber) {
-            SceneManager.LoadScene(sceneName: "EndScene");
-            return;
-        }
+        // Making sure the OptionsBoxes are all disabled at the beginning of a new dialogue
+        setActiveOptionsBoxes();
 
         CurrentChapterNumber = ChapterNumber;
         CurrentDialogueNumber = DialogueNumber;
         CurrentChapter = persistent.ChapterList[ChapterNumber - 1];
         CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber - 1];
 
+        SetBackground();
+
+        loadCharacters(CurrentDialogue.Characters);
+
+        WriteText(CurrentDialogue.Text);
+
+    }
+
+    public void SetBackground() {
+        loadBackground();
         if (CurrentChapter.HasBackground()) {
             loadBackground(CurrentChapter.Background);
         }
         if (CurrentDialogue.HasBackground()) {
             loadBackground(CurrentDialogue.Background);
         }
-        if (!CurrentDialogue.HasBackground() && !CurrentChapter.HasBackground()) {
-            loadBackground();
-        }
-
-        loadCharacters(CurrentDialogue.Characters);
-
-        WriteText(CurrentDialogue.Text);
-
     }
 
     public void loadBackground(string background = "") {
@@ -120,8 +110,6 @@ public class GameState : MonoBehaviour {
         }
 
     }
-
-
 
     public void loadCharacters(List<Character> characters) {
         foreach (GameObject characterCanvas in CharacterCanvas) {
@@ -169,12 +157,7 @@ public class GameState : MonoBehaviour {
     public void clickDialogue() {
         if (!Writing) {
             if (!CurrentDialogue.IsQuestion()) {
-                if (CurrentDialogue.HasRedirect()) {
-                    loadDialogue(CurrentDialogue.Redirect.Chapter, CurrentDialogue.Redirect.Dialogue);
-                }
-                else {
-                    loadDialogue(CurrentChapterNumber, ++CurrentDialogueNumber);
-                }
+                loadDialogue(CurrentDialogue.Redirect.Chapter, CurrentDialogue.Redirect.Dialogue);
             }
         }
         else {

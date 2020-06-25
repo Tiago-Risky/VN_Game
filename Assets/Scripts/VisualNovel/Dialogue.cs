@@ -8,30 +8,34 @@ namespace VisualNovel {
         public string Background;
         public string Text;
         public Redirect Redirect;
-        public List<Character> Characters;
+        public PointGate PointGate;
         public List<Option> Options;
+        public List<Character> Characters;
 
-        public Dialogue(int number, string text, string background, Redirect redirect, List<Character> characters, List<Option> options) {
+        public Dialogue(int number, string background, string text, Redirect redirect, PointGate pointGate, List<Option> options, List<Character> characters) {
             Number = number;
-            Text = text;
             Background = background;
+            Text = text;
             Redirect = redirect;
+            PointGate = pointGate;
             Characters = characters;
             Options = options;
         }
 
         public Dialogue(XElement xElement) {
             Number = int.Parse(xElement.Attribute("Number").Value);
-            Text = xElement.Element("Text").Value;
             Background = (xElement.Attribute("Background") != null) ? xElement.Attribute("Background").Value : "";
+            Text = xElement.Element("Text").Value;
             Redirect = (xElement.Element("Redirect") != null) ? new Redirect(xElement.Element("Redirect")) : null;
+            PointGate = (xElement.Element("PointGate") != null) ? new PointGate(xElement.Element("PointGate")) : null;
+
             Characters = new List<Character>();
             if (xElement.Element("Characters") != null) {
                 foreach (XElement character in xElement.Element("Characters").Elements("Character").ToList()) {
                     Characters.Add(new Character(character));
                 }
             }
-            
+
             if (xElement.Element("Options") != null) {
                 Options = new List<Option>();
                 foreach (XElement option in xElement.Element("Options").Elements("Option").ToList()) {
@@ -44,12 +48,12 @@ namespace VisualNovel {
             return Background.Length > 0;
         }
 
-        public bool HasRedirect() {
-            return Redirect != null;
+        public bool HasPointGate() {
+            return PointGate != null;
         }
 
         public bool HasCharacters() {
-            return (Characters!=null && Characters.Count > 0);
+            return Characters != null && Characters.Count > 0;
         }
 
         public bool IsQuestion() {
@@ -64,8 +68,20 @@ namespace VisualNovel {
                 xElement.Add(new XAttribute("Background", Background));
             }
 
-            if (HasRedirect()) {
-                xElement.Add(Redirect.ExportXML());
+            if (IsQuestion()) {
+                XElement optionsElement = new XElement("Options");
+                foreach (Option option in Options) {
+                    optionsElement.Add(option.ExportXML());
+                }
+                xElement.Add(optionsElement);
+            }
+            else {
+                if (HasPointGate()) {
+                    xElement.Add(PointGate.ExportXML());
+                }
+                else {
+                    xElement.Add(Redirect.ExportXML());
+                }
             }
 
             if (HasCharacters()) {
@@ -74,14 +90,6 @@ namespace VisualNovel {
                     charactersElement.Add(character.ExportXML());
                 }
                 xElement.Add(charactersElement);
-            }
-
-            if (IsQuestion()) {
-                XElement optionsElement = new XElement("Options");
-                foreach (Option option in Options) {
-                    optionsElement.Add(option.ExportXML());
-                }
-                xElement.Add(optionsElement);
             }
 
             return xElement;

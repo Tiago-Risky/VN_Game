@@ -2,9 +2,11 @@
   <Chapter Number="1" Background="chapter1bg1">
     <Dialogue Number="1">
       <Text>Hello and welcome to VN_Game! This is a test dialogue meant to introduce you to the game.</Text>
+      <Redirect Chapter="1" Dialogue="2" />
     </Dialogue>
     <Dialogue Number="2">
       <Text>This is the dialogue number 2, the character should now be Risky, and I'm going to ask you a question after.</Text>
+      <Redirect Chapter="1" Dialogue="3" />
       <Characters>
         <Character Name="Risky" Picture="character1-cut" Side="0" Selected="true" Hidden="false" />
         <Character Name="Gui" Picture="character2-cut" Side="2" Selected="false" Hidden="false" />
@@ -13,9 +15,6 @@
     </Dialogue>
     <Dialogue Number="3">
       <Text>What are you going to choose?</Text>
-      <Characters>
-        <Character Name="Risky" Picture="character1-cut" Side="0" Selected="true" Hidden="false" />
-      </Characters>
       <Options>
         <Option Text="This is option A">
           <Redirect Chapter="1" Dialogue="4" />
@@ -24,6 +23,9 @@
           <Redirect Chapter="1" Dialogue="5" />
         </Option>
       </Options>
+      <Characters>
+        <Character Name="Risky" Picture="character1-cut" Side="0" Selected="true" Hidden="false" />
+      </Characters>
     </Dialogue>
     <Dialogue Number="4">
       <Text>This is Chapter 1 Dialogue 4 and should appear for Option A</Text>
@@ -41,15 +43,13 @@
     </Dialogue>
     <Dialogue Number="6">
       <Text>This is C1/D6 and should appear after C1/D4</Text>
+      <Redirect Chapter="1" Dialogue="7" />
       <Characters>
         <Character Name="Risky" Picture="" Side="0" Selected="true" Hidden="false" />
       </Characters>
     </Dialogue>
     <Dialogue Number="7">
       <Text>Now this question has 3 options instead</Text>
-      <Characters>
-        <Character Name="Risky" Picture="" Side="0" Selected="true" Hidden="false" />
-      </Characters>
       <Options>
         <Option Text="This is option A">
           <Redirect Chapter="1" Dialogue="8" />
@@ -61,15 +61,15 @@
           <Redirect Chapter="2" Dialogue="1" />
         </Option>
       </Options>
-    </Dialogue>
-    <Dialogue Number="8">
-      <Text>Now this question has 4 options instead, and should appear after selecting option A on C1/D7</Text>
       <Characters>
         <Character Name="Risky" Picture="" Side="0" Selected="true" Hidden="false" />
       </Characters>
+    </Dialogue>
+    <Dialogue Number="8">
+      <Text>Now this question has 4 options instead, and should appear after selecting option A on C1/D7</Text>
       <Options>
         <Option Text="This is option A">
-          <Redirect Chapter="1" Dialogue="9" />
+          <Redirect Chapter="2" Dialogue="1" />
         </Option>
         <Option Text="This is option B">
           <Redirect Chapter="-1" Dialogue="-1" />
@@ -81,23 +81,29 @@
           <Redirect Chapter="-1" Dialogue="-1" />
         </Option>
       </Options>
+      <Characters>
+        <Character Name="Risky" Picture="" Side="0" Selected="true" Hidden="false" />
+      </Characters>
     </Dialogue>
   </Chapter>
   <Chapter Number="2">
     <Dialogue Number="1">
       <Text>Muahahaha</Text>
+      <Redirect Chapter="2" Dialogue="2" />
       <Characters>
         <Character Name="Gui" Picture="" Side="0" Selected="true" Hidden="false" />
       </Characters>
     </Dialogue>
     <Dialogue Number="2" Background="chapter1bg1">
       <Text>Now with backgrounds!</Text>
+      <Redirect Chapter="2" Dialogue="3" />
       <Characters>
         <Character Name="Gui" Picture="" Side="0" Selected="true" Hidden="false" />
       </Characters>
     </Dialogue>
     <Dialogue Number="3">
       <Text>And not anymore...</Text>
+      <Redirect Chapter="-1" Dialogue="-1" />
       <Characters>
         <Character Name="Gui" Picture="" Side="0" Selected="true" Hidden="false" />
       </Characters>
