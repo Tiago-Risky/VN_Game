@@ -1,11 +1,11 @@
 <PointGate>
     <Redirect Chapter="1" Dialogue="1" /> <!-- optional default redirect if every condition fails to match -->
     
-    <!-- In this condition if metalbenders>50 && nobles>50 you get redirected to 2/15-->
+    <!-- In this condition if metalbenders>50 && nobles<50 you get redirected to 2/15-->
     <Condition Type="AND">
         <Redirect Chapter="2" Dialogue="15" />
         <Expression>metalbenders>50</Expression>
-        <Expression>nobles>50</Expression>
+        <Expression>nobles&lt;50</Expression>
     </Condition>
 
     <!-- In this condition if either metalbenders=50 OR nobles<=50 you get redirected to 3/10-->
@@ -18,12 +18,15 @@
     <!-- Condition Type is either AND (every expression must be true) or OR (at least one expression must be true -->
     <!-- Condition Type is not case-sensitive, you can write AND, And, and,... -->
     <!-- Available expression comparison symbols
-        >= (Greater than or equal)
-        <= (Less than or equal)
-        <> (Different/Not)
+        >= (Greater than or equal) 	&gt;=
+        <= (Less than or equal)     &lt;=
+        <> (Different/Not)          &lt;&gt;
         != (Different/Not)
         = (Equal)
-        > (Greater than)
-        < (Less than)
-        -->
+        > (Greater than)            &gt;
+        < (Less than)               &lt;
+    
+        ALWAYS USE &lt; FOR < OR THE XML WILL COMPLETELY BREAK. OTHER SYMBOLS SEEM FINE.
+    
+    -->
 </PointGate>

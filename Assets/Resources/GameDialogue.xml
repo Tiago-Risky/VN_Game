@@ -18,6 +18,9 @@
       <Options>
         <Option Text="This is option A">
           <Redirect Chapter="1" Dialogue="4" />
+          <PointOperations>
+            <Add Point="weeb" Value="20" />
+          </PointOperations>
         </Option>
         <Option Text="This is option B">
           <Redirect Chapter="1" Dialogue="5" />
@@ -134,12 +137,17 @@
     </Dialogue>
     <Dialogue Number="5">
       <Text>This is Chapter3 Dialogue5. Your gamer points will be reduced and we're sending you back to C3D2.</Text>
-      <!-- TODO -->
+      <PointOperations>
+	      <Remove Point="gamer" Value="10" />
+      </PointOperations>
       <Redirect Chapter="3" Dialogue="2" />
     </Dialogue>
     <Dialogue Number="6">
       <Text>This is Chapter3 Dialogue6. Your gamer points will be increased.</Text>
-      <!-- TODO -->
+      <PointOperations>
+	      <Add Point="gamer" Value="20" />
+        <Set Point="weeb" Value="0" />
+      </PointOperations>
       <Redirect Chapter="3" Dialogue="7" />
     </Dialogue>
     <Dialogue Number="7">
@@ -149,6 +157,7 @@
         <Condition Type="AND">
             <Redirect Chapter="-1" Dialogue="-1" />
             <Expression>gamer=60</Expression>
+            <Expression>weeb&lt;100</Expression>
         </Condition>
       </PointGate>
     </Dialogue>

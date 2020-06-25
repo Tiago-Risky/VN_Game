@@ -82,6 +82,10 @@ public class GameState : MonoBehaviour {
 
         LoadCharacters(CurrentDialogue.Characters);
 
+        if (CurrentDialogue.HasPointOperations()) {
+            CurrentDialogue.PointOperations.RunAll(ref persistent.PointsList);
+        }
+
         WriteText(CurrentDialogue.Text);
 
     }
@@ -178,6 +182,9 @@ public class GameState : MonoBehaviour {
 
     // Each button should have an option number assigned, starting from 0
     public void ClickOption(int number) {
+        if (CurrentDialogue.Options[number].HasPointOperations()) {
+            CurrentDialogue.Options[number].PointOperations.RunAll(ref persistent.PointsList);
+        }
         if (CurrentDialogue.Options[number].HasPointGate()) {
             Redirect PointGateResult = CurrentDialogue.Options[number].PointGate.SolveGate();
             LoadDialogue(PointGateResult.Chapter, PointGateResult.Dialogue);

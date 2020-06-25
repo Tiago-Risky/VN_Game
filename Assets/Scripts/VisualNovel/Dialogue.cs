@@ -9,17 +9,19 @@ namespace VisualNovel {
         public string Text;
         public Redirect Redirect;
         public PointGate PointGate;
+        public PointOperations PointOperations;
         public List<Option> Options;
         public List<Character> Characters;
 
-        public Dialogue(int number, string background, string text, Redirect redirect, PointGate pointGate, List<Option> options, List<Character> characters) {
+        public Dialogue(int number, string background, string text, Redirect redirect, PointGate pointGate, PointOperations pointOperation, List<Option> options, List<Character> characters) {
             Number = number;
             Background = background;
             Text = text;
             Redirect = redirect;
             PointGate = pointGate;
-            Characters = characters;
+            PointOperations = pointOperation;
             Options = options;
+            Characters = characters;
         }
 
         public Dialogue(XElement xElement) {
@@ -28,6 +30,7 @@ namespace VisualNovel {
             Text = xElement.Element("Text").Value;
             Redirect = (xElement.Element("Redirect") != null) ? new Redirect(xElement.Element("Redirect")) : null;
             PointGate = (xElement.Element("PointGate") != null) ? new PointGate(xElement.Element("PointGate")) : null;
+            PointOperations = (xElement.Element("PointOperations") != null) ? new PointOperations(xElement.Element("PointOperations")) : null;
 
             Characters = new List<Character>();
             if (xElement.Element("Characters") != null) {
@@ -50,6 +53,10 @@ namespace VisualNovel {
 
         public bool HasPointGate() {
             return PointGate != null;
+        }
+
+        public bool HasPointOperations() {
+            return PointOperations != null;
         }
 
         public bool HasCharacters() {
@@ -82,6 +89,10 @@ namespace VisualNovel {
                 else {
                     xElement.Add(Redirect.ExportXML());
                 }
+            }
+
+            if (HasPointOperations()) {
+                xElement.Add(PointOperations.ExportXML());
             }
 
             if (HasCharacters()) {
