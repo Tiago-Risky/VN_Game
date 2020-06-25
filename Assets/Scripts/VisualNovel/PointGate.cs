@@ -1,15 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System.Xml.Linq;
 using UnityEngine;
 
 namespace VisualNovel {
     public class PointGate {
-        public List<Condition> Conditions;
         public Redirect DefaultRedirect;
+        public List<Condition> Conditions;
 
-        public PointGate(List<Condition> conditions, Redirect defaultRedirect) {
-            Conditions = conditions;
+        public PointGate(Redirect defaultRedirect, List<Condition> conditions) {
             DefaultRedirect = defaultRedirect;
+            Conditions = conditions;
+        }
+
+        public PointGate(XElement xElement) {
+            DefaultRedirect = (xElement.Element("Redirect") != null) ? new Redirect(xElement.Element("Redirect")) : null;
+            Conditions = new List<Condition>();
+            foreach (XElement condition in xElement.Elements("Condition").ToList()) {
+                Conditions.Add(new Condition(condition));
+            }
         }
 
         public Redirect SolveGate() {
@@ -25,18 +35,41 @@ namespace VisualNovel {
                 return null;
             }
         }
+
+        public XElement ExportXML() {
+            XElement xElement = new XElement("PointGate");
+
+            if (DefaultRedirect!=null) {
+                xElement.Add(DefaultRedirect.ExportXML());
+            }
+
+            foreach (Condition condition in Conditions) {
+                xElement.Add(condition.ExportXML());
+            }
+
+            return xElement;
+        }
     }
 
     public class Condition {
         private PersistentManagerScript persistent = PersistentManagerScript.Instance;
-        public List<string> Expressions;
         public string Type;
         public Redirect Redirect;
+        public List<string> Expressions;
 
-        public Condition(List<string> expressions, string type, Redirect redirect) {
-            Expressions = expressions;
+        public Condition(string type, Redirect redirect, List<string> expressions) {
             Type = type;
             Redirect = redirect;
+            Expressions = expressions;
+        }
+
+        public Condition(XElement xElement) {
+            Type = xElement.Attribute("Type").Value;
+            Redirect = new Redirect(xElement.Element("Redirect"));
+            Expressions = new List<string>();
+            foreach (XElement expression in xElement.Elements("Expression").ToList()) {
+                Expressions.Add(expression.Value);
+            }
         }
 
         public bool Pass() {
@@ -94,6 +127,17 @@ namespace VisualNovel {
             }
 
             return false;
+        }
+
+        // For the dialogue editor
+        public XElement ExportXML() {
+            XElement xElement = new XElement("Condition", new XAttribute("Type", Type), Redirect.ExportXML());
+
+            foreach (string expression in Expressions) {
+                xElement.Add(new XElement("Expression", expression));
+            }
+
+            return xElement;
         }
     }
 }

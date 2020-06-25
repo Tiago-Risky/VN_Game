@@ -1,0 +1,5 @@
+<Document>
+    <Point Name="gamer" Value="50" /> 
+    <Point Name="designer" Value="0" />
+    <Point Name="weeb" Value="100" />
+</Document>

@@ -9,8 +9,8 @@ public class PersistentManagerScript : MonoBehaviour {
         private set;
     }
 
+    public Dictionary<string, Point> PointsList;
     public List<Chapter> ChapterList;
-    public Dictionary<string, Points> PointsList;
 
     private void Awake() {
         if (Instance == null) {
