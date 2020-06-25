@@ -7,8 +7,6 @@ using VisualNovel;
 public class GameState : MonoBehaviour {
     //Game State Objects and Variables
     private PersistentManagerScript persistent = PersistentManagerScript.Instance;
-    private int CurrentChapterNumber = 1;
-    private int CurrentDialogueNumber = 1;
     private Chapter CurrentChapter;
     private Dialogue CurrentDialogue;
 
@@ -57,7 +55,7 @@ public class GameState : MonoBehaviour {
         DialogueLoadingIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Loading").gameObject;
         DialogueSkipIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Skip").gameObject;
 
-        loadDialogue(1, 1);
+        LoadDialogue(1, 1);
     }
 
     // Update is called once per frame
@@ -65,8 +63,8 @@ public class GameState : MonoBehaviour {
         WriteUpdate();
     }
 
-    private void loadDialogue(int ChapterNumber, int DialogueNumber) {
-        Debug.Log("loadDialogue called with " + ChapterNumber + " and " + DialogueNumber);
+    private void LoadDialogue(int ChapterNumber, int DialogueNumber) {
+        Debug.Log("LoadDialogue(" + ChapterNumber + ", " + DialogueNumber + ")");
 
         // Calling -1 for chapter and dialogue moves to EndScene
         if (ChapterNumber == -1 && DialogueNumber == -1) {
@@ -75,32 +73,30 @@ public class GameState : MonoBehaviour {
         }
 
         // Making sure the OptionsBoxes are all disabled at the beginning of a new dialogue
-        setActiveOptionsBoxes();
+        SetActiveOptionsBoxes();
 
-        CurrentChapterNumber = ChapterNumber;
-        CurrentDialogueNumber = DialogueNumber;
         CurrentChapter = persistent.ChapterList[ChapterNumber - 1];
         CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber - 1];
 
         SetBackground();
 
-        loadCharacters(CurrentDialogue.Characters);
+        LoadCharacters(CurrentDialogue.Characters);
 
         WriteText(CurrentDialogue.Text);
 
     }
 
     public void SetBackground() {
-        loadBackground();
+        LoadBackground();
         if (CurrentChapter.HasBackground()) {
-            loadBackground(CurrentChapter.Background);
+            LoadBackground(CurrentChapter.Background);
         }
         if (CurrentDialogue.HasBackground()) {
-            loadBackground(CurrentDialogue.Background);
+            LoadBackground(CurrentDialogue.Background);
         }
     }
 
-    public void loadBackground(string background = "") {
+    public void LoadBackground(string background = "") {
         if (background != "") {
             BackgroundImage.sprite = Resources.Load<Sprite>("Backgrounds/" + background);
             BackgroundImage.color = Color.white;
@@ -111,7 +107,7 @@ public class GameState : MonoBehaviour {
 
     }
 
-    public void loadCharacters(List<Character> characters) {
+    public void LoadCharacters(List<Character> characters) {
         foreach (GameObject characterCanvas in CharacterCanvas) {
             characterCanvas.SetActive(false);
         }
@@ -154,10 +150,10 @@ public class GameState : MonoBehaviour {
         }
     }
 
-    public void clickDialogue() {
+    public void ClickDialogue() {
         if (!Writing) {
             if (!CurrentDialogue.IsQuestion()) {
-                loadDialogue(CurrentDialogue.Redirect.Chapter, CurrentDialogue.Redirect.Dialogue);
+                LoadDialogue(CurrentDialogue.Redirect.Chapter, CurrentDialogue.Redirect.Dialogue);
             }
         }
         else {
@@ -172,24 +168,21 @@ public class GameState : MonoBehaviour {
             Text TextField = OptionButton.transform.GetChild(0).GetComponent<Text>();
             TextField.text = CurrentDialogue.Options[x].Text;
         }
-        setActiveOptionsBoxes(NumberOfOptions);
+        SetActiveOptionsBoxes(NumberOfOptions);
     }
 
     // Each button should have an option number assigned, starting from 0
-    public void clickOption(int number) {
-        loadDialogue(CurrentDialogue.Options[number].Redirect.Chapter,
+    public void ClickOption(int number) {
+        LoadDialogue(CurrentDialogue.Options[number].Redirect.Chapter,
                      CurrentDialogue.Options[number].Redirect.Dialogue);
     }
 
-    private void setActiveOptionsBoxes(int NumberOfOptions = 0) {
+    private void SetActiveOptionsBoxes(int NumberOfOptions = 0) {
         foreach (KeyValuePair<int, GameObject> optionsBox in OptionBoxes) {
             optionsBox.Value.SetActive(false);
         }
 
-        if (!OptionBoxes.ContainsKey(NumberOfOptions)) {
-            return;
-        }
-        else {
+        if (OptionBoxes.ContainsKey(NumberOfOptions)) {
             OptionBoxes[NumberOfOptions].SetActive(true);
         }
     }
