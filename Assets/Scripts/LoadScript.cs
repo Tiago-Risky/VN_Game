@@ -8,6 +8,14 @@ using VisualNovel;
 
 public class LoadScript : MonoBehaviour {
 
+    public static LoadScript Instance {
+        get;
+        private set;
+    }
+
+    public Dictionary<string, Point> PointsList;
+    public List<Chapter> ChapterList;
+
     public TextAsset PointsXML;
     public TextAsset DialogueXML;
     public Text StatusTextbox;
@@ -19,12 +27,12 @@ public class LoadScript : MonoBehaviour {
 
         Debug.Log("Loading PointsXML File");
         XElement pointsFile = XElement.Parse(PointsXML.text);
-        PersistentManagerScript.Instance.PointsList = LoadPoints(pointsFile);
+        PointsList = LoadPoints(pointsFile);
         Debug.Log("Loading PointsXML File Done");
 
         Debug.Log("Loading DialogueXML File");
         XElement dialogueFile = XElement.Parse(DialogueXML.text);
-        PersistentManagerScript.Instance.ChapterList = LoadDialogue(dialogueFile);
+        ChapterList = LoadDialogue(dialogueFile);
         Debug.Log("Loading DialogueXML File Done");
 
         StatusTextbox.text = "Game files loaded";
@@ -43,6 +51,13 @@ public class LoadScript : MonoBehaviour {
         }
 
         return LoadedPoints;
+    }
+
+    public void ReloadPoints() {
+        Debug.Log("Reloading PointsXML File");
+        XElement pointsFile = XElement.Parse(PointsXML.text);
+        PointsList = LoadPoints(pointsFile);
+        Debug.Log("Reloading PointsXML File Done");
     }
 
     public List<Chapter> LoadDialogue(XElement file) {
@@ -64,6 +79,16 @@ public class LoadScript : MonoBehaviour {
                 SceneManager.LoadScene(sceneName: "GameScene"); //Changing to the GameScene once the timer is done
             }
         }
+    }
 
+    private void Awake() {
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        else {
+            Destroy(gameObject);
+        }
     }
 }

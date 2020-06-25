@@ -6,7 +6,7 @@ using VisualNovel;
 
 public class GameState : MonoBehaviour {
     //Game State Objects and Variables
-    private PersistentManagerScript persistent = PersistentManagerScript.Instance;
+    private LoadScript LoadScript = LoadScript.Instance;
     private Chapter CurrentChapter;
     private Dialogue CurrentDialogue;
 
@@ -55,6 +55,9 @@ public class GameState : MonoBehaviour {
         DialogueLoadingIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Loading").gameObject;
         DialogueSkipIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Skip").gameObject;
 
+        Debug.Log("Reloaded");
+        LoadScript.ReloadPoints();
+        Debug.Log(LoadScript.PointsList["gamer"].Value);
         LoadDialogue(1, 1);
     }
 
@@ -75,7 +78,7 @@ public class GameState : MonoBehaviour {
         // Making sure the OptionsBoxes are all disabled at the beginning of a new dialogue
         SetActiveOptionsBoxes();
 
-        CurrentChapter = persistent.ChapterList[ChapterNumber - 1];
+        CurrentChapter = LoadScript.ChapterList[ChapterNumber - 1];
         CurrentDialogue = CurrentChapter.Dialogues[DialogueNumber - 1];
 
         SetBackground();
@@ -83,7 +86,7 @@ public class GameState : MonoBehaviour {
         LoadCharacters(CurrentDialogue.Characters);
 
         if (CurrentDialogue.HasPointOperations()) {
-            CurrentDialogue.PointOperations.RunAll(ref persistent.PointsList);
+            CurrentDialogue.PointOperations.RunAll(ref LoadScript.PointsList);
         }
 
         WriteText(CurrentDialogue.Text);
@@ -157,7 +160,7 @@ public class GameState : MonoBehaviour {
         if (!Writing) {
             if (!CurrentDialogue.IsQuestion()) {
                 if (CurrentDialogue.HasPointGate()) {
-                    Redirect PointGateResult = CurrentDialogue.PointGate.SolveGate();
+                    Redirect PointGateResult = CurrentDialogue.PointGate.SolveGate(ref LoadScript.PointsList);
                     LoadDialogue(PointGateResult.Chapter, PointGateResult.Dialogue);
                 }
                 else {
@@ -183,10 +186,10 @@ public class GameState : MonoBehaviour {
     // Each button should have an option number assigned, starting from 0
     public void ClickOption(int number) {
         if (CurrentDialogue.Options[number].HasPointOperations()) {
-            CurrentDialogue.Options[number].PointOperations.RunAll(ref persistent.PointsList);
+            CurrentDialogue.Options[number].PointOperations.RunAll(ref LoadScript.PointsList);
         }
         if (CurrentDialogue.Options[number].HasPointGate()) {
-            Redirect PointGateResult = CurrentDialogue.Options[number].PointGate.SolveGate();
+            Redirect PointGateResult = CurrentDialogue.Options[number].PointGate.SolveGate(ref LoadScript.PointsList);
             LoadDialogue(PointGateResult.Chapter, PointGateResult.Dialogue);
         }
         else {

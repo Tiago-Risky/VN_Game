@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using UnityEngine;
 
@@ -22,9 +22,9 @@ namespace VisualNovel {
             }
         }
 
-        public Redirect SolveGate() {
+        public Redirect SolveGate(ref Dictionary<string, Point> PointsList) {
             foreach (Condition condition in Conditions) {
-                if (condition.Pass()) {
+                if (condition.Pass(ref PointsList)) {
                     return condition.Redirect;
                 }
             }
@@ -39,7 +39,7 @@ namespace VisualNovel {
         public XElement ExportXML() {
             XElement xElement = new XElement("PointGate");
 
-            if (DefaultRedirect!=null) {
+            if (DefaultRedirect != null) {
                 xElement.Add(DefaultRedirect.ExportXML());
             }
 
@@ -52,7 +52,6 @@ namespace VisualNovel {
     }
 
     public class Condition {
-        private PersistentManagerScript persistent = PersistentManagerScript.Instance;
         public string Type;
         public Redirect Redirect;
         public List<string> Expressions;
@@ -72,18 +71,18 @@ namespace VisualNovel {
             }
         }
 
-        public bool Pass() {
+        public bool Pass(ref Dictionary<string, Point> PointsList) {
             switch (Type.ToLower()) {
                 case "and":
                     foreach (string Expression in Expressions) {
-                        if (!TestExpression(Expression)) {
+                        if (!TestExpression(Expression, ref PointsList)) {
                             return false;
                         }
                     }
                     return true;
                 case "or":
                     foreach (string Expression in Expressions) {
-                        if (TestExpression(Expression)) {
+                        if (TestExpression(Expression, ref PointsList)) {
                             return true;
                         }
                     }
@@ -95,15 +94,15 @@ namespace VisualNovel {
             return false;
         }
 
-        public bool TestExpression(string expression) {
+        public bool TestExpression(string expression, ref Dictionary<string, Point> PointsList) {
             string[] splitExpression = Regex.Split(expression, "(>=|<=|<>|!=|=|>|<)");
             List<int> Numbers = new List<int>();
             if (int.TryParse(splitExpression[0], out int result)) {
                 Numbers.Add(result);
-                Numbers.Add(persistent.PointsList[splitExpression[2]].Value);
+                Numbers.Add(PointsList[splitExpression[2]].Value);
             }
             else {
-                Numbers.Add(persistent.PointsList[splitExpression[0]].Value);
+                Numbers.Add(PointsList[splitExpression[0]].Value);
                 Numbers.Add(int.Parse(splitExpression[2]));
             }
 
