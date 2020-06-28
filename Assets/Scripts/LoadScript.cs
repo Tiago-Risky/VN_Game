@@ -39,7 +39,7 @@ public class LoadScript : MonoBehaviour {
         Ready = true; // This will signal to start counting the TimeToNextScene down.
     }
 
-    public Dictionary<string, Point> LoadPoints(XElement file) {
+    private Dictionary<string, Point> LoadPoints(XElement file) {
         Dictionary<string, Point> LoadedPoints = new Dictionary<string, Point>();
         List<XElement> Points = file.Elements("Point").ToList();
 
@@ -60,7 +60,7 @@ public class LoadScript : MonoBehaviour {
         Debug.Log("Reloading PointsXML File Done");
     }
 
-    public List<Chapter> LoadDialogue(XElement file) {
+    private List<Chapter> LoadDialogue(XElement file) {
         List<Chapter> LoadedChapters = new List<Chapter>();
         List<XElement> Chapters = file.Elements("Chapter").ToList();
 

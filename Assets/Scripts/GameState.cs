@@ -55,9 +55,8 @@ public class GameState : MonoBehaviour {
         DialogueLoadingIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Loading").gameObject;
         DialogueSkipIndicator = ScreenCanvas.transform.Find("DialogueBox/Indicator_Skip").gameObject;
 
-        Debug.Log("Reloaded");
+        Debug.Log("Loading GameState");
         LoadScript.ReloadPoints();
-        Debug.Log(LoadScript.PointsList["gamer"].Value);
         LoadDialogue(1, 1);
     }
 
@@ -93,7 +92,7 @@ public class GameState : MonoBehaviour {
 
     }
 
-    public void SetBackground() {
+    private void SetBackground() {
         LoadBackground();
         if (CurrentChapter.HasBackground()) {
             LoadBackground(CurrentChapter.Background);
@@ -103,7 +102,7 @@ public class GameState : MonoBehaviour {
         }
     }
 
-    public void LoadBackground(string background = "") {
+    private void LoadBackground(string background = "") {
         if (background != "") {
             BackgroundImage.sprite = Resources.Load<Sprite>("Backgrounds/" + background);
             BackgroundImage.color = Color.white;
@@ -113,7 +112,7 @@ public class GameState : MonoBehaviour {
         }
     }
 
-    public void LoadCharacters(List<Character> characters) {
+    private void LoadCharacters(List<Character> characters) {
         foreach (GameObject characterCanvas in CharacterCanvas) {
             characterCanvas.SetActive(false);
         }
@@ -173,7 +172,7 @@ public class GameState : MonoBehaviour {
         }
     }
 
-    public void SetOptions() {
+    private void SetOptions() {
         int NumberOfOptions = CurrentDialogue.Options.Count;
         for (int x = 0; x < CurrentDialogue.Options.Count; x++) {
             GameObject OptionButton = OptionBoxes[NumberOfOptions].transform.GetChild(x).gameObject;
